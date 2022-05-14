@@ -7,8 +7,8 @@
     <ProjectGuid>{D3C06B05-20FD-4153-ADB1-D5BE1ECFDFDF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Xan.Wigwam.Ast</RootNamespace>
-    <AssemblyName>Xan.Wigwam.Ast</AssemblyName>
+    <RootNamespace>Xandevelop.Wigwam.Ast</RootNamespace>
+    <AssemblyName>Xandevelop.Wigwam.Ast</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

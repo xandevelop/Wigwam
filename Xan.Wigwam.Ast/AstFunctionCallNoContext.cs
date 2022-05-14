@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Xan.Wigwam.Ast
+namespace Xandevelop.Wigwam.Ast
 {
     // Note: First pass generates these, second pass removes them and replaces wiht AstFunctionCalls.
     public class AstFunctionCallNoContext : IAstStatement

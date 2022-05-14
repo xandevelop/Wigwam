@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Xan.Wigwam.Ast
+namespace Xandevelop.Wigwam.Ast
 {
     public class AstCommand : IAstStatement
     {
