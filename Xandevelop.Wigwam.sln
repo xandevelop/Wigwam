@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xandevelop.Wigwam.Ast", "Xandevelop.Wigwam.Ast\Xandevelop.Wigwam.Ast.csproj", "{D3C06B05-20FD-4153-ADB1-D5BE1ECFDFDF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xandevelop.Wigwam.Compiler", "Xandevelop.Wigwam.Compiler\Xandevelop.Wigwam.Compiler.csproj", "{FEB57CE8-3963-4EDC-9919-3D768278CBD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xandevelop.Wigwam.TestConsole", "Xandevelop.Wigwam.TestConsole\Xandevelop.Wigwam.TestConsole.csproj", "{FEEEFE01-CB51-48BF-A0A9-D0BCC5A72665}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{D3C06B05-20FD-4153-ADB1-D5BE1ECFDFDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3C06B05-20FD-4153-ADB1-D5BE1ECFDFDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3C06B05-20FD-4153-ADB1-D5BE1ECFDFDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEB57CE8-3963-4EDC-9919-3D768278CBD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEB57CE8-3963-4EDC-9919-3D768278CBD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEB57CE8-3963-4EDC-9919-3D768278CBD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEB57CE8-3963-4EDC-9919-3D768278CBD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEEEFE01-CB51-48BF-A0A9-D0BCC5A72665}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEEEFE01-CB51-48BF-A0A9-D0BCC5A72665}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEEEFE01-CB51-48BF-A0A9-D0BCC5A72665}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEEEFE01-CB51-48BF-A0A9-D0BCC5A72665}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

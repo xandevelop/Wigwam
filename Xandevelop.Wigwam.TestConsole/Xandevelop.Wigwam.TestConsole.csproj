@@ -4,17 +4,18 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D3C06B05-20FD-4153-ADB1-D5BE1ECFDFDF}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Xandevelop.Wigwam.Ast</RootNamespace>
-    <AssemblyName>Xandevelop.Wigwam.Ast</AssemblyName>
+    <ProjectGuid>{FEEEFE01-CB51-48BF-A0A9-D0BCC5A72665}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Xandevelop.Wigwam.TestConsole</RootNamespace>
+    <AssemblyName>Xandevelop.Wigwam.TestConsole</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,6 +25,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -42,19 +44,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AstCommand.cs" />
-    <Compile Include="AstControlDeclaration.cs" />
-    <Compile Include="AstFormalParameter.cs" />
-    <Compile Include="AstFunction.cs" />
-    <Compile Include="AstFunctionCall.cs" />
-    <Compile Include="AstPostCondition.cs" />
-    <Compile Include="AstPreCondition.cs" />
-    <Compile Include="AstProgram.cs" />
-    <Compile Include="AstTest.cs" />
-    <Compile Include="AstArgument.cs" />
-    <Compile Include="IAstMethod.cs" />
-    <Compile Include="IAstStatement.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Xandevelop.Wigwam.Ast\Xandevelop.Wigwam.Ast.csproj">
+      <Project>{D3C06B05-20FD-4153-ADB1-D5BE1ECFDFDF}</Project>
+      <Name>Xandevelop.Wigwam.Ast</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xandevelop.Wigwam.Compiler\Xandevelop.Wigwam.Compiler.csproj">
+      <Project>{FEB57CE8-3963-4EDC-9919-3D768278CBD7}</Project>
+      <Name>Xandevelop.Wigwam.Compiler</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
