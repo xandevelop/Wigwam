@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Xandevelop.Wigwam.Ast
 {
     [DebuggerDisplay("Formal Parameter | {Name} | {DataType} | {DefaultValue}")]
-    public class AstFormalParameter
+    public class AstFormalParameter : AstBase
     {
         public string Name { get; set; }
         public string DataType { get; set; }

@@ -45,7 +45,7 @@ namespace Xandevelop.Wigwam.Compiler
 
         public (AstProgram ast, IEnumerable<CompileMessage> compileErrors) Compile(string filePath)
         {
-            AstBuilder astBuilder = new AstBuilder();
+            AstBuilder astBuilder = new AstBuilder(filePath);
             FirstPass(filePath, astBuilder);
             SecondPass(astBuilder);
             return (astBuilder.Program, astBuilder.CompileMessages);

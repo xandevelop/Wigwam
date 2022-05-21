@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 namespace Xandevelop.Wigwam.Ast
 {
     [DebuggerDisplay("Test | {Name}")]
-    public class AstTest : IAstMethod
+    public class AstTest : AstBase, IAstMethod
     {
         public string Name { get; set; }
         public string Description { get; set; }
 
         public List<IAstStatement> Statements { get; set; }
+        
     }
 }

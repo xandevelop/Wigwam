@@ -23,6 +23,10 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
         {
             AstTest astTest = new AstTest
             {
+                SourceFile = line.SourceFile,
+                SourceLine = line.SourceLine,
+                SourceLineNumber = line.SourceLineNumber,
+                
                 Name = line.Blocks.First(),
                 Description = line.CommentBlock,
                 Statements = new List<IAstStatement>()

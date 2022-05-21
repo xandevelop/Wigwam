@@ -8,5 +8,5 @@ using System.Threading.Tasks;
 namespace Xandevelop.Wigwam.Ast
 {
     [DebuggerDisplay("PreCondition")]
-    public class AstPreCondition { }
+    public class AstPreCondition : AstBase { }
 }

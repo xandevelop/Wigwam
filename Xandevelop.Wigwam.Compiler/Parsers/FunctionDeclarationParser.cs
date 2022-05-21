@@ -23,6 +23,10 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
         {
             AstFunction astFunction = new AstFunction
             {
+                SourceFile = line.SourceFile,
+                SourceLine = line.SourceLine,
+                SourceLineNumber = line.SourceLineNumber,
+
                 Name = line.Blocks.First(),
                 Description = line.CommentBlock,
                 Statements = new List<IAstStatement>()

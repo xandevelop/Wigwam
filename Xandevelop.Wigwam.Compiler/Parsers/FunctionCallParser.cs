@@ -23,6 +23,10 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
         {
             AstFunctionCallNoContext astFunctionCall = new AstFunctionCallNoContext
             {
+                SourceFile = line.SourceFile,
+                SourceLine = line.SourceLine,
+                SourceLineNumber = line.SourceLineNumber,
+
                 FunctionName = line.Command,
                 ContextFreeArguments = line.Blocks,
                 Description = line.CommentBlock
@@ -40,7 +44,7 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
     }
 
     // Note: First pass generates these, second pass removes them and replaces wiht AstFunctionCalls.
-    public class AstFunctionCallNoContext : IAstStatement
+    public class AstFunctionCallNoContext : AstBase, IAstStatement
     {
         public string FunctionName { get; set; } // For signature matching - note: we'll discard this in second pass in favor of a pointer to the actual matched function
 

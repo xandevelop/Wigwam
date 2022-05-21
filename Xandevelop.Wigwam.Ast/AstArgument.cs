@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Xandevelop.Wigwam.Ast
 {
     [DebuggerDisplay("Argument | {Name} | {Value}")]
-    public class AstArgument
+    public class AstArgument : AstBase
     {
         public string Name { get; set; }
         public string Value { get; set; }

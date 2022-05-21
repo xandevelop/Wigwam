@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AstBase.cs" />
     <Compile Include="AstCommand.cs" />
     <Compile Include="AstControlDeclaration.cs" />
     <Compile Include="AstFormalParameter.cs" />

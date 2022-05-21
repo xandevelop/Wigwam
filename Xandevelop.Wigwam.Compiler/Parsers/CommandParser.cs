@@ -45,7 +45,14 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
 
             if (ast.HasCurrentMethod)
             {
-                ast.AddStatementToCurrentMethod(new AstCommand { Command = line.Command, Target = targetArgument.ValueString, Value = null, Description = line.CommentBlock });
+                ast.AddStatementToCurrentMethod(new AstCommand {
+                    SourceFile = line.SourceFile,
+                    SourceLine = line.SourceLine,
+                    SourceLineNumber = line.SourceLineNumber,
+                    Command = line.Command,
+                    Target = targetArgument.ValueString,
+                    Value = null,
+                    Description = line.CommentBlock });
             }
             else
             {

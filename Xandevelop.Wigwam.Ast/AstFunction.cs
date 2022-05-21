@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Xandevelop.Wigwam.Ast
 {
     [DebuggerDisplay("Function | {Name}")]
-    public class AstFunction : IAstMethod
+    public class AstFunction : AstBase, IAstMethod
     {
         public string Name { get; set; }
         public List<AstFormalParameter> FormalParameters { get; set; }
@@ -17,5 +17,6 @@ namespace Xandevelop.Wigwam.Ast
 
         public List<IAstStatement> Statements { get; set; }
         public string Description { get; set; }
+        
     }
 }

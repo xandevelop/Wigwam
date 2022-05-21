@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Xandevelop.Wigwam.Ast
 {
     [DebuggerDisplay("Function Call | {Function.Name}")]
-    public class AstFunctionCall : IAstStatement
+    public class AstFunctionCall : AstBase, IAstStatement
     {
 
         public List<AstArgument> Arguments { get; set; }

@@ -10,7 +10,13 @@ namespace Xandevelop.Wigwam.Compiler
 {
     public class AstBuilder
     {
-        public AstProgram Program { get; } = new AstProgram();
+        public AstBuilder(string initialFilePath)
+        {
+            Program = new AstProgram();
+            Program.SourceFile = initialFilePath;
+        }
+
+        public AstProgram Program { get; }
 
         #region Current Method Tracking
 
