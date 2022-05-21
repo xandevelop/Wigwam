@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,12 +51,14 @@ namespace Xandevelop.Wigwam.Compiler
             return (astBuilder.Program, astBuilder.CompileMessages);
         }
 
+        // To deal with possibly recursive include statements - we don't reprocess any files in this list
+        private List<string> ProcessedPaths { get; } = new List<string>();
+
         // First Pass
         // WARNING: Recursive
         private void FirstPass(string filePath, AstBuilder astBuilder)
         {
-            string prev = filePath;
-
+            
             FileScanner fileScanner = new FileScanner();
             List<Line> lines = fileScanner.ReadLines(filePath, FileReader.ReadAllText(filePath));
 
@@ -63,18 +66,50 @@ namespace Xandevelop.Wigwam.Compiler
             {
                 astBuilder.CurrentLine = line; // For error handling - when an error is found, we can use this to not have to pass loads of trace info.
 
-                var lineParser = OrderedLineParsers.FirstOrDefault(x => x.IsMatch(line));
-                if (lineParser == null)
+                if (line.Command == "include" || line.Command == "import" || line.Command == "using")
                 {
-                    astBuilder.AddError(StandardMessages.NoParserFound(line));
+                    // Special logic applies for includes so that they can be recursive.  Other commands can be plugin-like things.
+
+                    string relPath = line.Blocks.FirstOrDefault();
+                    if (relPath == null)
+                    {
+                        astBuilder.AddError(StandardMessages.IncludeMustSpecifyPath(line));
+                    }
+                    else
+                    {
+                        string absPath = FileReader.BuildAbsPath(filePath, relPath);
+                        if (absPath == null)
+                        {
+                            astBuilder.AddError(StandardMessages.IncludeFileNotFound(line));
+                        }
+                        else
+                        {
+                            if (ProcessedPaths.Contains(absPath))
+                            {
+                                // Already included - possible circular reference
+                            }
+                            else
+                            {
+                                ProcessedPaths.Add(absPath);
+                                FirstPass(absPath, astBuilder);
+                            }
+                        }
+                    }
                 }
                 else
                 {
-                    lineParser.Parse(astBuilder, line);
+                    var lineParser = OrderedLineParsers.FirstOrDefault(x => x.IsMatch(line));
+                    if (lineParser == null)
+                    {
+                        astBuilder.AddError(StandardMessages.NoParserFound(line));
+                    }
+                    else
+                    {
+                        lineParser.Parse(astBuilder, line);
+                    }
                 }
             }
-
-            filePath = prev;
+            
         }
 
         private void SecondPass(AstBuilder astBuilder)
@@ -85,6 +120,8 @@ namespace Xandevelop.Wigwam.Compiler
 
 #warning todo
         }
+
+        
     }
 
 
