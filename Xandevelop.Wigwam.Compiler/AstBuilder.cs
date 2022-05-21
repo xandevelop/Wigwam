@@ -35,6 +35,8 @@ namespace Xandevelop.Wigwam.Compiler
         
         public void AddTest(AstTest astTest)
         {
+            // Note: we don't add line tracking info here because we *may* add a test or function or whatever from a line other than the one we're currently on
+            // So there's more boilerplate code living in the ILineParsers, but it's more flexible for future.
             CurrentMethod = astTest;
             Program.Tests.Add(astTest);
         }
