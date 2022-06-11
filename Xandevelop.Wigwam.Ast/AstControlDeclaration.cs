@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace Xandevelop.Wigwam.Ast
 {
-    [DebuggerDisplay("Control")]
     public class AstControlDeclaration : AstBase
     {
     }

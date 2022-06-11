@@ -7,6 +7,5 @@ using System.Threading.Tasks;
 
 namespace Xandevelop.Wigwam.Ast
 {
-    [DebuggerDisplay("PostCondition")]
     public class AstPostCondition : AstBase { }
 }

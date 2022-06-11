@@ -6,8 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Xandevelop.Wigwam.Ast
-{
-    [DebuggerDisplay("{Command} | {Target} | {Value}")]
+{ 
     public class AstCommand : AstBase, IAstStatement
     {
         public string Command { get; set; }

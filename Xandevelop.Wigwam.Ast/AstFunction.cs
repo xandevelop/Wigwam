@@ -6,8 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Xandevelop.Wigwam.Ast
-{
-    [DebuggerDisplay("Function | {Name}")]
+{ 
     public class AstFunction : AstBase, IAstMethod
     {
         public string Name { get; set; }

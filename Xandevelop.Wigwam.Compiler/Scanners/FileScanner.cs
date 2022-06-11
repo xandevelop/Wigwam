@@ -20,7 +20,7 @@ namespace Xandevelop.Wigwam.Compiler.Scanners
                 Line curLine = new Line
                 {
                     SourceFile = sourceFileName,
-                    SourceLine = line,
+                    SourceLine = line.Trim(),
                     SourceLineNumber = lineNumber
                 };
 
