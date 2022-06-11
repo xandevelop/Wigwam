@@ -31,6 +31,10 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
                 Description = line.CommentBlock,
                 Statements = new List<IAstStatement>()
             };
+
+            astFunction.FormalParameters = new FormalParameterScanner().Scan(line);
+
+
 #warning todo read rest of signature
             ast.AddFunction(astFunction);
         }

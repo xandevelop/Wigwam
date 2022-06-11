@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Xandevelop.Wigwam.Ast;
 
 namespace Xandevelop.Wigwam.Compiler.Scanners
 {
@@ -11,6 +12,8 @@ namespace Xandevelop.Wigwam.Compiler.Scanners
     {
         public List<ArgumentData> ArgumentData { get; set; }
         public List<ArgumentError> ArgumentErrors { get; set; }
+
+        public bool IsError => ArgumentData == null;
 
         public static implicit operator ArgumentDataOrError(List<ArgumentData> data) => new ArgumentDataOrError { ArgumentData = data };
         public static implicit operator ArgumentDataOrError(List<ArgumentError> errors) => new ArgumentDataOrError { ArgumentErrors = errors };
@@ -35,6 +38,15 @@ namespace Xandevelop.Wigwam.Compiler.Scanners
     // Arg is like ArgName:Value ${somevar} XXX
     public class ArgumentScanner
     {
+        public ArgumentDataOrError ScanLineArguments(Line line, List<Ast.AstFormalParameter> formalParameters)
+        {
+            List<ExpectedArgument> expargs = new List<ExpectedArgument>();
+            foreach(var x in formalParameters)
+            {
+                expargs.Add(new ExpectedArgument { Name = x.Name, Matched = false, DefaultValue = x.DefaultValue, AllowNoValue = false });
+            }
+            return ScanLineArguments(line, expargs.ToArray());
+        }
 
         // Consider making static?
         public ArgumentDataOrError ScanLineArguments(Line line, params ExpectedArgument[] expectedArguments)
@@ -164,6 +176,13 @@ namespace Xandevelop.Wigwam.Compiler.Scanners
         }
 
         private int Max(int a, int b) => a > b ? a : b;
+
+        public List<AstArgument> ScanLineArgumentsWithoutContext(Line line)
+        {
+            return ScanArgumentsInLineOrder(line)
+                .Select(x => new AstArgument { Name = x.Name, Value = x.ValueString })
+                .ToList();
+        }
     }
 
     public class ArgumentData

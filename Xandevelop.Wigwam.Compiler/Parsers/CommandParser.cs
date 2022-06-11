@@ -29,6 +29,7 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
             switch (line.Command)
             {
                 case "click": ParseClick(ast, line); break;
+                case "echo": ParseEcho(ast, line); break;
                 default: throw new Exception();
             }
         }
@@ -53,6 +54,33 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
                     Target = targetArgument.ValueString,
                     Value = null,
                     Description = line.CommentBlock });
+            }
+            else
+            {
+                ast.AddError(StandardMessages.CommandOutsideOfMethod(line));
+            }
+        }
+
+        private void ParseEcho(AstBuilder ast, Line line)
+        {
+            var args = ArgumentScanner.ScanLineArguments(line, new ExpectedArgument { Name = "target" });
+            ArgumentData targetArgument = null;
+
+            args.Match(arguments => targetArgument = arguments.First(x => x.Name == "target"),
+                errors => throw new Exception(errors.First().Name));
+
+            if (ast.HasCurrentMethod)
+            {
+                ast.AddStatementToCurrentMethod(new AstCommand
+                {
+                    SourceFile = line.SourceFile,
+                    SourceLine = line.SourceLine,
+                    SourceLineNumber = line.SourceLineNumber,
+                    Command = line.Command,
+                    Target = targetArgument.ValueString,
+                    Value = null,
+                    Description = line.CommentBlock
+                });
             }
             else
             {

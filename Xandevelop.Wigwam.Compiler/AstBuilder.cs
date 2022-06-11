@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xandevelop.Wigwam.Ast;
+using Xandevelop.Wigwam.Compiler.Parsers;
 using Xandevelop.Wigwam.Compiler.Scanners;
 
 namespace Xandevelop.Wigwam.Compiler
@@ -25,6 +26,8 @@ namespace Xandevelop.Wigwam.Compiler
 
         public bool CurrentMethodIsFunction => CurrentMethod is AstFunction;
 
+        public List<IAstMethod> AllMethods { get; set; } = new List<IAstMethod>();
+
         #endregion
 
         #region Build/Add Methods
@@ -40,7 +43,12 @@ namespace Xandevelop.Wigwam.Compiler
 
         public void AddStatementToCurrentMethod(IAstStatement statement)
         {
-            if (CurrentMethod != null) CurrentMethod.Statements.Add(statement);
+            if (CurrentMethod != null)
+            {
+                CurrentMethod.Statements.Add(statement);
+                statement.Method = CurrentMethod;
+            }
+
             else throw new Exception("Precondition not met - must handle this in caller");
         }
         
@@ -50,18 +58,32 @@ namespace Xandevelop.Wigwam.Compiler
             // So there's more boilerplate code living in the ILineParsers, but it's more flexible for future.
             CurrentMethod = astTest;
             Program.Tests.Add(astTest);
+            AllMethods.Add(astTest);
         }
 
         public void AddFunction(AstFunction astFunction)
         {
             CurrentMethod = astFunction;
             Program.Functions.Add(astFunction);
+            AllMethods.Add(astFunction);
         }
 
         internal void AddControlDeclaration(AstControlDeclaration control)
         {
             CurrentMethod = null;
             Program.Controls.Add(control);
+            
+        }
+
+        // for patching up - we can swap a function call without context for one with context once we work out the correct context.
+        internal void Replace(AstFunctionCallNoContext fc, AstFunctionCall funcCall)
+        {
+            funcCall.Method = fc.Method;
+
+            var statements = fc.Method.Statements;
+            int index = statements.IndexOf(fc);
+            statements.RemoveAt(index);
+            statements.Insert(index, funcCall);
         }
 
         #endregion
@@ -86,7 +108,13 @@ namespace Xandevelop.Wigwam.Compiler
             });
         }
 
-        
+        public void AddArgumentErrors(List<ArgumentError> errors)
+        {
+            foreach(var err in errors)
+            {
+                AddError(err.Name);
+            }
+        }
 
 
         #endregion

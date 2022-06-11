@@ -38,6 +38,12 @@ namespace Xandevelop.Wigwam.Compiler
         public static string IncludeFileNotFound(Line l) => $"Included file not found '{l.Blocks.First()}'";
 
         public static string UnrecognisedComparison(Line l, string comparison) => $"Comparison value '{comparison}' not recognised.  Options include equals, not equals, contains, not contains, regex.";
+
+        // Function does not exist by name.  Different to function exists but you're not specifying correct args.
+        public static string FunctionSignatureNotFound_NoFunctionWithName(Line l) => $"Function {l.Command} could not be found.  Make sure you define the function somewhere and that you've typed the name correctly.";
+        public static string FunctionSignatureNotFound_SinglePossibility_ArgumentsIncorrect(Line l) => $"Function {l.Command} could not be matched.  Argument mismatch.  You seem to be trying to use this function, but the arguments you have specified are invalid.";
+        public static string FunctionSignatureNotFound_MultiplePossibility_ArgumentsIncorrect(Line l) => $"Function {l.Command} could not be matched.  Ambiguous invocation.  There are multiple functions that might match, but the compiler cannot work out which one you mean.  Change the parameters or preconditions of the functions so it is clearer which one you are trying to use.";
+
     }
 
     public static class StringExn

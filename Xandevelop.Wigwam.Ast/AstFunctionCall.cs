@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Xandevelop.Wigwam.Ast
 { 
-    public class AstFunctionCall : AstBase, IAstStatement
+    public class AstFunctionCall : IAstStatement
     {
 
         public List<AstArgument> Arguments { get; set; }
         public string Description { get; set; }
 
-        public AstFunction Function { get; set; } // Function after matching.
+        public List<AstFunction> PossibleFunctions { get; set; } // Function after matching. Note: may still be multiple possible paths until inlining or execution because of how preconditions work.
     }
 }

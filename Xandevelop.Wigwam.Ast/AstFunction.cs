@@ -10,11 +10,11 @@ namespace Xandevelop.Wigwam.Ast
     public class AstFunction : AstBase, IAstMethod
     {
         public string Name { get; set; }
-        public List<AstFormalParameter> FormalParameters { get; set; }
-        public List<AstPreCondition> PreConditions { get; set; }
-        public List<AstPostCondition> PostConditions { get; set; }
+        public List<AstFormalParameter> FormalParameters { get; set; } = new List<AstFormalParameter>();
+        public List<AstPreCondition> PreConditions { get; set; } = new List<AstPreCondition>();
+        public List<AstPostCondition> PostConditions { get; set; } = new List<AstPostCondition>();
 
-        public List<IAstStatement> Statements { get; set; }
+        public List<IAstStatement> Statements { get; set; } = new List<IAstStatement>();
         public string Description { get; set; }
         
     }

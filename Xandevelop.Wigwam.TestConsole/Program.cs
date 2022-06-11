@@ -14,10 +14,18 @@ namespace Xandevelop.Wigwam.TestConsole
             // Console app to test things as we go
             var c = Compiler.Compiler.DefaultCompiler();
             var fileReader = 
-             new MockFileReader("default", @"some error
-#a comment
+             new MockFileReader("default", @"
 test | hello
-click | hello");
+echo | first
+say hello | x:1
+echo | second
+
+func | say hello | x
+echo | hello
+
+func | say hello | y
+echo | hello v2
+");
 
             fileReader.AddFile(@"C:\Tests\MyTest.tpp", MyTestContent);
             fileReader.AddFile(@"C:\Tests\Include1.tpp", Include1Content);
@@ -25,8 +33,8 @@ click | hello");
             fileReader.AddFile(@"C:\Tests\Extras\Include3.tpp", Include3Content);
 
             c.FileReader = fileReader;
-            var ast = c.Compile(@"C:\Tests\MyTest.tpp");
-
+            //var ast = c.Compile(@"C:\Tests\MyTest.tpp");
+            var ast = c.Compile("default");
         }
 
         static string MyTestContent = @"

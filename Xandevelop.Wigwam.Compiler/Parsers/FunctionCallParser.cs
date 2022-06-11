@@ -19,6 +19,7 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
             return true; // Catch all.  Note: high order number means we shouldn't catch any more specific things.
         }
 
+        ArgumentScanner argScanner = new ArgumentScanner();
         public void Parse(AstBuilder ast, Line line)
         {
             AstFunctionCallNoContext astFunctionCall = new AstFunctionCallNoContext
@@ -27,8 +28,9 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
                 SourceLine = line.SourceLine,
                 SourceLineNumber = line.SourceLineNumber,
 
+                ContextFreeArguments = argScanner.ScanLineArgumentsWithoutContext(line),
                 FunctionName = line.Command,
-                ContextFreeArguments = line.Blocks,
+                SourceLineForPatchup = line,
                 Description = line.CommentBlock
             };
 
@@ -44,12 +46,14 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
     }
 
     // Note: First pass generates these, second pass removes them and replaces wiht AstFunctionCalls.
-    public class AstFunctionCallNoContext : AstBase, IAstStatement
+    public class AstFunctionCallNoContext : IAstStatement
     {
         public string FunctionName { get; set; } // For signature matching - note: we'll discard this in second pass in favor of a pointer to the actual matched function
 
         // Arguments BEFORE we match with a function signature, so these may not be valid, they're just what the scanner/parser read on first pass.
-        public List<string> ContextFreeArguments { get; internal set; }
+        public List<AstArgument> ContextFreeArguments { get; internal set; }
+
+        public Line SourceLineForPatchup { get; set; }
 
         public string Description { get; set; }
 

@@ -38,6 +38,7 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
                 new ExpectedArgument { Name = "comparison", DefaultValue = "equals" }
             );
 
+            // todo tidy up code like this with better abstractions in error class
             if(args.ArgumentErrors?.Any()??false)
             {
                 foreach(var x in args.ArgumentErrors)

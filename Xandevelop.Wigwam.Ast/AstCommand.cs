@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Xandevelop.Wigwam.Ast
 { 
-    public class AstCommand : AstBase, IAstStatement
+    public class AstCommand : IAstStatement
     {
         public string Command { get; set; }
         public string Target { get; set; }
