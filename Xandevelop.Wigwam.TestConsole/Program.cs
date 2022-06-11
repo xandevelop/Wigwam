@@ -31,6 +31,7 @@ click | hello");
 
         static string MyTestContent = @"
 include | C:\Tests\Include1.tpp
+control | MyControl | id:abc
 using | Extras/Include3.tpp
 test | hello
 click | hello";

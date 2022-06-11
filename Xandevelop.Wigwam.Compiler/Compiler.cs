@@ -28,10 +28,20 @@ namespace Xandevelop.Wigwam.Compiler
             };
 
             c.LineParsers = new List<ILineParser>();
-            c.LineParsers.Add(new CommandParser());
+            c.LineParsers.Add(new CommandParser()); // click, echo, screenshot, speak, assert, verify, store
             c.LineParsers.Add(new FunctionCallParser());
             c.LineParsers.Add(new TestDeclarationParser());
             c.LineParsers.Add(new FunctionDeclarationParser());
+            c.LineParsers.Add(new PreConditionParser());
+            c.LineParsers.Add(new PostConditionParser());
+            c.LineParsers.Add(new ControlDeclarationParser());
+            
+            //c.LineParsers.Add(new VariableDeclarationParser()); // Maybe?
+
+            // I've not decided if these are really a good idea or not yet... They may be superficially done with commands?
+            //c.LineParsers.Add(new IfBlockParser());
+            //c.LineParsers.Add(new WhileBlockParser());
+            //c.LineParsers.Add(new EndBlockParser());
 
             return c;
         }

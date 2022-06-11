@@ -15,11 +15,20 @@ namespace Xandevelop.Wigwam.Compiler.Scanners
         public static implicit operator ArgumentDataOrError(List<ArgumentData> data) => new ArgumentDataOrError { ArgumentData = data };
         public static implicit operator ArgumentDataOrError(List<ArgumentError> errors) => new ArgumentDataOrError { ArgumentErrors = errors };
 
+        [Obsolete("Happier with implementation of PreConditionParser and PostConditionParser so copy the way they do this instead")]
         public void Match(Action<List<ArgumentData>> matchArguments, Action<List<ArgumentError>> matchErrors)
         {
             if (ArgumentData != null) { matchArguments(ArgumentData); return; }
             else if (ArgumentErrors != null) { matchErrors(ArgumentErrors); return; }
             throw new Exception("Value not set");
+        }
+
+        public ArgumentData this[string name]
+        {
+            get
+            {
+                return ArgumentData.FirstOrDefault(x => x.Name == name);
+            }
         }
     }
 
@@ -27,7 +36,7 @@ namespace Xandevelop.Wigwam.Compiler.Scanners
     public class ArgumentScanner
     {
 
-
+        // Consider making static?
         public ArgumentDataOrError ScanLineArguments(Line line, params ExpectedArgument[] expectedArguments)
         {
             var actualArgs = ScanArgumentsInLineOrder(line);
@@ -191,12 +200,17 @@ namespace Xandevelop.Wigwam.Compiler.Scanners
 
     public class ExpectedArgument
     {
-        public bool IsRequired => DefaultValue == null;
+        public bool IsRequired => DefaultValue == null && !AllowNoValue;
         public string Name { get; set; }
         public bool Matched { get; set; }
 
         // Only if not required
         public string DefaultValue { get; set; }
+
+        /// <summary>
+        /// Allow the arg to not be specified, even when there's no default
+        /// </summary>
+        public bool AllowNoValue { get; set; }
 
         public ArgumentData GenerateDefaultArg()
         {

@@ -23,9 +23,20 @@ namespace Xandevelop.Wigwam.Compiler
         public bool HasCurrentMethod => CurrentMethod != null;
         private IAstMethod CurrentMethod { get; set; }
 
+        public bool CurrentMethodIsFunction => CurrentMethod is AstFunction;
+
         #endregion
 
         #region Build/Add Methods
+
+        public void AddPreCondition(AstPreCondition pre)
+        {
+            (CurrentMethod as AstFunction).PreConditions.Add(pre);
+        }
+        public void AddPostCondition(AstPostCondition post)
+        {
+            (CurrentMethod as AstFunction).PostConditions.Add(post);
+        }
 
         public void AddStatementToCurrentMethod(IAstStatement statement)
         {
@@ -47,6 +58,12 @@ namespace Xandevelop.Wigwam.Compiler
             Program.Functions.Add(astFunction);
         }
 
+        internal void AddControlDeclaration(AstControlDeclaration control)
+        {
+            CurrentMethod = null;
+            Program.Controls.Add(control);
+        }
+
         #endregion
 
         #region Error Handling
@@ -54,6 +71,9 @@ namespace Xandevelop.Wigwam.Compiler
         public Line CurrentLine { get; set; }
         private List<CompileMessage> _compileMessages { get; } = new List<CompileMessage>();
         public IEnumerable<CompileMessage> CompileMessages => _compileMessages;
+
+        
+
         public void AddError(string error)
         {
             _compileMessages.Add(new CompileMessage
@@ -65,6 +85,9 @@ namespace Xandevelop.Wigwam.Compiler
                 Text = error
             });
         }
+
+        
+
 
         #endregion
     }
