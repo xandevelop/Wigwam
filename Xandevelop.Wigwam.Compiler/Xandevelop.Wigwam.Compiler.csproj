@@ -51,6 +51,7 @@
     <Compile Include="Parsers\ControlDeclarationParser.cs" />
     <Compile Include="Parsers\FunctionCallParser.cs" />
     <Compile Include="Parsers\FunctionDeclarationParser.cs" />
+    <Compile Include="Parsers\FunctionPatchup.cs" />
     <Compile Include="Parsers\FunctionPatchupParser.cs" />
     <Compile Include="Parsers\ILineParser.cs" />
     <Compile Include="Parsers\ISecondPassParser.cs" />

@@ -35,6 +35,8 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
             // First, the function name must match
             List<AstFunction> functionsWithRightName = functions.Where(x => x.Name.Trim().ToLower() == fc.FunctionName.Trim().ToLower()).ToList();
 
+            List<AstFunctionCallNoContext> allFunctionCalls = new List<AstFunctionCallNoContext>(); // Track all the function calls in the script, for use later when working out pre/post.
+
             if(functionsWithRightName.Count == 0)
             {
                 // No match - error
@@ -54,7 +56,9 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
                 else
                 {
                     var funcCall = BuildFuncCall(functionsWithRightName.First(), fc);
-                    ast.Replace(fc, funcCall);
+                    fc.SetFunctionResolved(funcCall);
+                    allFunctionCalls.Add(fc);
+                    //ast.Replace(fc, funcCall);
                 }
             }
             else
@@ -101,28 +105,51 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
                     // 
                     // We probably don't know which path we're following until we try to inline.
 
+                    // Traverse up the call stack to work out the conditions currently in play to determine which function we're actually talking about here.
+                    //if(fc.Method.
+
                     var funcCall = BuildFuncCall(matchedFuncs, fc);
-                    ast.Replace(fc, funcCall);
+                    fc.SetFunctionResolved(funcCall);
+                    allFunctionCalls.Add(fc);
+                    //ast.Replace(fc, funcCall);
                 }
             }
+
+            // Next, some links were probably unresolved, so start working them out...  (Items only distinguished by pre/post conditions)
+            while(allFunctionCalls.Any(x => x.FunctionResolved.Count > 1))
+            {
+                List<AstFunctionCallNoContext> functionCallsToProcess = allFunctionCalls.Where(x => x.FunctionResolved.Count > 1).ToList();
+                for(int i = 0; i < functionCallsToProcess.Count; i++)
+                {
+                    var curFuncCall = functionCallsToProcess[i];
+
+                    //curFuncCall.FunctionResolved.First().
+                }
+            }
+
         }
 
-        private AstFunctionCall BuildFuncCall(AstFunction astFunction, AstFunctionCallNoContext fc)
+        private AstFunctionCallTemp BuildFuncCall(AstFunction astFunction, AstFunctionCallNoContext fc)
         {
-            return BuildFuncCall(new List<AstFunction> { astFunction }, fc);
-        }
-
-        private AstFunctionCall BuildFuncCall(List<AstFunction> astFunctions, AstFunctionCallNoContext fc)
-        {
-            AstFunctionCall result = new AstFunctionCall
+            return new AstFunctionCallTemp
             {
                 SourceFile = fc.SourceFile,
                 SourceLine = fc.SourceLine,
                 SourceLineNumber = fc.SourceLineNumber,
                 Arguments = fc.ContextFreeArguments,
-                Description = fc.Description,
-                PossibleFunctions = astFunctions
+                Description = fc.Description, 
+                Function = astFunction,
+                //CallerMethod = fc
             };
+        }
+
+        private List<AstFunctionCallTemp> BuildFuncCall(List<AstFunction> astFunctions, AstFunctionCallNoContext fc)
+        {
+            var result = new List<AstFunctionCallTemp>();
+            foreach(var a in astFunctions)
+            {
+                result.Add(BuildFuncCall(a, fc));
+            }
             return result;
         }
 

@@ -27,7 +27,7 @@ namespace Xandevelop.Wigwam.Compiler
         public bool CurrentMethodIsFunction => CurrentMethod is AstFunction;
 
         public List<IAstMethod> AllMethods { get; set; } = new List<IAstMethod>();
-
+        
         #endregion
 
         #region Build/Add Methods
@@ -59,6 +59,40 @@ namespace Xandevelop.Wigwam.Compiler
             CurrentMethod = astTest;
             Program.Tests.Add(astTest);
             AllMethods.Add(astTest);
+        }
+
+        // Duplicates a function, but with different pre/post conditions
+        public AstFunctionCallTemp DuplicateFunction(AstFunctionCallTemp method, Dictionary<string, string> conditionsWhenCalled)
+        {
+            AstFunction func = new AstFunction()
+            {
+                Name = method.Function.Name,
+                FormalParameters = method.Function.FormalParameters,
+                PostConditions = method.Function.PostConditions,
+                Statements = method.Function.Statements,
+                Description = method.Function.Description,
+                OverloadGeneratedFrom = method.Function
+            };
+            foreach(var x in conditionsWhenCalled)
+            {
+                func.PreConditions.Add(new AstPreCondition { Variable = x.Key, Value = x.Value, Comparison = PreConditionComparisonType.Equals });
+            }
+            AddFunction(func);
+            return new AstFunctionCallTemp { Function = func, ConditionsWhenCalled = conditionsWhenCalled };
+        }
+
+        internal void Replace(AstFunctionCallNoContext callStatement, AstFunctionCallTemp duplicatedFunc)
+        {
+            Replace(callStatement, new AstFunctionCall
+            {
+                Function = duplicatedFunc.Function,
+                Arguments = duplicatedFunc.Arguments,
+                Description = duplicatedFunc.Description,
+                Method = duplicatedFunc.Method,
+                SourceFile = duplicatedFunc.SourceFile,
+                SourceLine = duplicatedFunc.SourceLine,
+                SourceLineNumber = duplicatedFunc.SourceLineNumber
+            });
         }
 
         public void AddFunction(AstFunction astFunction)

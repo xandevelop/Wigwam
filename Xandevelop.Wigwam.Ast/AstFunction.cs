@@ -17,5 +17,9 @@ namespace Xandevelop.Wigwam.Ast
         public List<IAstStatement> Statements { get; set; } = new List<IAstStatement>();
         public string Description { get; set; }
         
+        /// <summary>
+        /// Indicates the function was not literally in the source code, but rather was automatically generated to fulfil preconditions of downstream calls.
+        /// </summary>
+        public AstFunction OverloadGeneratedFrom { get; set; }
     }
 }
