@@ -61,8 +61,49 @@ namespace Xandevelop.Wigwam.Compiler
             AllMethods.Add(astTest);
         }
 
+        public AstFunction DuplicateFunction(AstFunction method, Dictionary<string, string> conditionsWhenCalled)
+        {
+            AstFunction func = new AstFunction()
+            {
+                Name = method.Name,
+                FormalParameters = method.FormalParameters,
+                PostConditions = method.PostConditions,
+                //Statements = method.Statements,
+                Description = method.Description,
+                OverloadGeneratedFrom = method,
+                SourceFile = method.SourceFile,
+                SourceLine = method.SourceLine,
+                SourceLineNumber = method.SourceLineNumber
+            };
+
+            // Can't do Statements = method.Statements - we need a value copy, not a reference copy.
+            foreach(var s in method.Statements)
+            {
+                func.Statements.Add(s.CopyWithNewConditions(conditionsWhenCalled));
+            }
+
+            //foreach(var s in func.Statements.Where(x => x is AstFunctionCallNoContext).Cast<AstFunctionCallNoContext>().ToList())
+            //{
+            //    // Un-bind statements - there are now different preconditions so they need redoing from clean.
+            //    s.SetFunctionNotResolved(conditionsWhenCalled);
+            //}
+#warning may need to also undo function resolution?
+            foreach (var x in conditionsWhenCalled)
+            {
+                func.PreConditions.Add(new AstPreCondition { Variable = x.Key, Value = x.Value, Comparison = PreConditionComparisonType.Equals,
+                    SourceFile = method.SourceFile, SourceLine = "(Automatically Generated PreCondition)", SourceLineNumber = method.SourceLineNumber });
+            }
+            func.ConditionsWhenCompiled = conditionsWhenCalled;
+
+            Program.Functions.Add(func);
+            AllMethods.Add(func);
+
+            return func;
+        }
+
         // Duplicates a function, but with different pre/post conditions
-        public AstFunctionCallTemp DuplicateFunction(AstFunctionCallTemp method, Dictionary<string, string> conditionsWhenCalled)
+        [Obsolete("old version")]
+        public AstFunctionCallNoContext DuplicateFunction(AstFunctionCallNoContext method, Dictionary<string, string> conditionsWhenCalled)
         {
             AstFunction func = new AstFunction()
             {
@@ -78,15 +119,17 @@ namespace Xandevelop.Wigwam.Compiler
                 func.PreConditions.Add(new AstPreCondition { Variable = x.Key, Value = x.Value, Comparison = PreConditionComparisonType.Equals });
             }
             AddFunction(func);
-            return new AstFunctionCallTemp { Function = func, ConditionsWhenCalled = conditionsWhenCalled };
+            var result = new AstFunctionCallNoContext {  ConditionsWhenCalled = conditionsWhenCalled };
+            result.SetFunctionResolved(func, conditionsWhenCalled);
+            return result;
         }
 
-        internal void Replace(AstFunctionCallNoContext callStatement, AstFunctionCallTemp duplicatedFunc)
+        internal void Replace(AstFunctionCallNoContext callStatement, AstFunctionCallNoContext duplicatedFunc)
         {
             Replace(callStatement, new AstFunctionCall
             {
                 Function = duplicatedFunc.Function,
-                Arguments = duplicatedFunc.Arguments,
+                Arguments = duplicatedFunc.ContextFreeArguments,
                 Description = duplicatedFunc.Description,
                 Method = duplicatedFunc.Method,
                 SourceFile = duplicatedFunc.SourceFile,

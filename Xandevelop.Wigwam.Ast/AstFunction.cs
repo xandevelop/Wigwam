@@ -21,5 +21,8 @@ namespace Xandevelop.Wigwam.Ast
         /// Indicates the function was not literally in the source code, but rather was automatically generated to fulfil preconditions of downstream calls.
         /// </summary>
         public AstFunction OverloadGeneratedFrom { get; set; }
+
+        // If the function is called with different conditions specified, store them here.
+        public Dictionary<string, string> ConditionsWhenCompiled { get; set; }
     }
 }

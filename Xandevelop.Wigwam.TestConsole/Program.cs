@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xandevelop.Wigwam.Compiler;
+using XanDevelop.Wigwam.Tests;
 
 namespace Xandevelop.Wigwam.TestConsole
 {
@@ -11,30 +12,48 @@ namespace Xandevelop.Wigwam.TestConsole
     {
         static void Main(string[] args)
         {
+            //new CompilerTests().TestCanCallFunction_NoParameters_NoConditions();
+            //return;
+
             // Console app to test things as we go
             var c = Compiler.Compiler.DefaultCompiler();
             var fileReader =
                 new MockFileReader("default", @"
-test | hello
-set pre a
-call f indirect
+test | i can log in
+open login page
+submit form
 
-func | set pre a
-post | a | a
+test | i can email admin
+open contact page
+submit form
 
-# virtually duplicated
-func | call f indirect
-call f
+#test | i can email and reuse func
+#open contact page
+#submit form
 
-func | call f
-pre | a | a
+func | open login page
+echo | login page opened
+post | page | login
 
-func | call f
-pre | a | b
+func | open contact page
+echo | contact page opened
+post | page | contact
+
+func | submit form
+echo | submitting form
+click submit
+
+func | click submit
+pre | page | login
+echo | clicked submit on login page
+
+func | click submit
+pre | page | contact
+echo | clicked submit on contact page
 
 ");
 
-
+            #region
             //             new MockFileReader("default", @"
             //test | hello
             //echo | first
@@ -47,6 +66,7 @@ pre | a | b
             //func | say hello | y
             //echo | hello v2
             //");
+            
 
             fileReader.AddFile(@"C:\Tests\MyTest.tpp", MyTestContent);
             fileReader.AddFile(@"C:\Tests\Include1.tpp", Include1Content);
@@ -55,7 +75,12 @@ pre | a | b
 
             c.FileReader = fileReader;
             //var ast = c.Compile(@"C:\Tests\MyTest.tpp");
+            #endregion
             var ast = c.Compile("default");
+
+
+            var xx = ast.ast.Tests.First().Statements.Last();
+
         }
 
         static string MyTestContent = @"
