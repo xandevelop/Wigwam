@@ -61,9 +61,9 @@ namespace XanDevelop.Wigwam.Tests
             var expected = (expectedProgram, expectedCompileErrors);
 
             var assertProg = expectedProgram.WithDeepEqual(actual.ast)
-                .IgnoreProperty(x => x.Name == "Method" /*&& x.DeclaringType == typeof(AstCommand)*/); // Avoid infinite recursion from things tracking their parents
-
-            if(ignoreSourceTracking)
+                .IgnoreProperty(x => x.Name == "Method" /*&& x.DeclaringType == typeof(AstCommand)*/) // Avoid infinite recursion from things tracking their parents
+                .IgnoreProperty(x => x.Name == "SourceLineForPatchup" || x.Name == "ConditionsWhenCalled" || x.Name == "ConditionsWhenCompiled"); // Some properties are for internal use only
+            if (ignoreSourceTracking)
             {
                 assertProg = assertProg.IgnoreProperty(x => x.Name == "SourceLine")
                                        .IgnoreProperty(x => x.Name == "SourceFile")
@@ -217,36 +217,134 @@ echo | hello
         }
 
         
-
-        public void TestIndirectPreConditions()
+        [Test]
+        public void TestIndirectPreConditions1()
         {
             var script = @"
-test | hello
-set pre a
-call f indirect
+test | i can log in
+open login page
+submit form
 
-test | hello
-set pre b
-call f indirect
+test | i can email admin
+open contact page
+submit form
 
-func | set pre a
-post | a | a
+func | open login page
+echo | login page opened
+post | page | login
 
-# virtually duplicated
-func | call f indirect
-call f
+func | open contact page
+echo | contact page opened
+post | page | contact
 
-func | call f
-pre | a | a
+func | submit form
+echo | submitting form
+click submit
 
-func | call f
-pre | a | b
+func | click submit
+pre | page | login
+echo | clicked submit on login page
 
+func | click submit
+pre | page | contact
+echo | clicked submit on contact page
 ";
-            var compilerResult = RunSingleFileScript(script);
-            ;
+            var func_click_submit_login = new AstFunction
+            {
+                Name = "click submit",
+                Statements = new List<IAstStatement>
+                {
+                    Echo("clicked submit on login page")
+                },
+                PreConditions = new List<AstPreCondition>
+                {
+                    new AstPreCondition { Variable = "page", Value="login", Comparison=PreConditionComparisonType.Equals }
+                }
+            };
+            var func_click_submit_contact = new AstFunction
+            {
+                Name = "click submit",
+                Statements = new List<IAstStatement>
+                {
+                    Echo("clicked submit on contact page")
+                },
+                PreConditions = new List<AstPreCondition>
+                {
+                    new AstPreCondition { Variable = "page", Value="contact", Comparison=PreConditionComparisonType.Equals }
+                }
+            };
 
-#warning todo assertions
+            var func_submit_form_1 = new AstFunction
+            {
+                Name = "submit form",
+                Statements = new List<IAstStatement>
+                {
+                    Echo("submitting form"),
+                    Call(func_click_submit_login)
+                },
+            };
+            var func_submit_form_2 = new AstFunction
+            {
+                Name = "submit form",
+                Statements = new List<IAstStatement>
+                {
+                    Echo("submitting form"),
+                    Call(func_click_submit_contact)
+                },
+                PreConditions = new List<AstPreCondition>
+                { new AstPreCondition { Variable = "page", Value = "contact" } }
+            };
+
+            var func_open_contact_page = new AstFunction
+            {
+                Name = "open contact page",
+                Statements = new List<IAstStatement>
+                {
+                    Echo("contact page opened")
+                },
+                PostConditions = new List<AstPostCondition>
+                { new AstPostCondition { Variable = "page", Value = "contact" } }
+            };
+            var func_open_login_page = new AstFunction
+            {
+                Name = "open login page",
+                Statements = new List<IAstStatement>
+                {
+                    Echo("login page opened")
+                },
+                PostConditions = new List<AstPostCondition>
+                { new AstPostCondition { Variable = "page", Value = "login" } }
+            };
+
+
+
+            var test_i_can_login = new AstTest
+            {
+                Name = "i can log in",
+                Statements = new List<IAstStatement>
+                {
+                    Call(func_open_login_page),
+                    Call(func_submit_form_1)
+                }
+            };
+            var test_i_can_email_admin = new AstTest
+            {
+                Name = "i can email admin",
+                Statements = new List<IAstStatement>
+                {
+                    Call(func_open_contact_page),
+                    Call(func_submit_form_2)
+                }
+            };
+
+            var expectedProgram = new AstProgram
+            {
+                Functions = new List<AstFunction> { func_click_submit_login, func_click_submit_contact, func_submit_form_1, func_submit_form_2, func_open_contact_page, func_open_login_page },
+                Tests = new List<AstTest> { test_i_can_login, test_i_can_email_admin }
+            };
+            var expectedErrors = new List<CompileMessage>();
+
+            ExecuteTest(script, expectedProgram, expectedErrors);
         }
     }
 }
