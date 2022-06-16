@@ -67,7 +67,6 @@ namespace Xandevelop.Wigwam.Compiler
                 Name = method.Name,
                 FormalParameters = method.FormalParameters,
                 PostConditions = method.PostConditions,
-                //Statements = method.Statements,
                 Description = method.Description,
                 OverloadGeneratedFrom = method,
                 SourceFile = method.SourceFile,
@@ -81,12 +80,7 @@ namespace Xandevelop.Wigwam.Compiler
                 func.Statements.Add(s.CopyWithNewConditions(conditionsWhenCalled));
             }
 
-            //foreach(var s in func.Statements.Where(x => x is AstFunctionCallNoContext).Cast<AstFunctionCallNoContext>().ToList())
-            //{
-            //    // Un-bind statements - there are now different preconditions so they need redoing from clean.
-            //    s.SetFunctionNotResolved(conditionsWhenCalled);
-            //}
-#warning may need to also undo function resolution?
+            
             foreach (var x in conditionsWhenCalled)
             {
                 func.PreConditions.Add(new AstPreCondition { Variable = x.Key, Value = x.Value, Comparison = PreConditionComparisonType.Equals,
@@ -100,28 +94,7 @@ namespace Xandevelop.Wigwam.Compiler
             return func;
         }
 
-        // Duplicates a function, but with different pre/post conditions
-        [Obsolete("old version")]
-        public AstFunctionCallNoContext DuplicateFunction(AstFunctionCallNoContext method, Dictionary<string, string> conditionsWhenCalled)
-        {
-            AstFunction func = new AstFunction()
-            {
-                Name = method.Function.Name,
-                FormalParameters = method.Function.FormalParameters,
-                PostConditions = method.Function.PostConditions,
-                Statements = method.Function.Statements,
-                Description = method.Function.Description,
-                OverloadGeneratedFrom = method.Function
-            };
-            foreach(var x in conditionsWhenCalled)
-            {
-                func.PreConditions.Add(new AstPreCondition { Variable = x.Key, Value = x.Value, Comparison = PreConditionComparisonType.Equals });
-            }
-            AddFunction(func);
-            var result = new AstFunctionCallNoContext {  ConditionsWhenCalled = conditionsWhenCalled };
-            result.SetFunctionResolved(func, conditionsWhenCalled);
-            return result;
-        }
+        
 
         
         public void AddFunction(AstFunction astFunction)

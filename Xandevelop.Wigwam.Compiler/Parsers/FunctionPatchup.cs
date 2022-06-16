@@ -40,47 +40,7 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
 
                     // We read the statement, then we "execute" it virtually
                     ParseStatements(ast, signature, signature.Statements, currentConditions);
-
-                    
-
-
-
-                    //                    if (signature.ConditionsWhenCompiled == null) // think this can't happen any more...
-                    //                    {
-                    //                        // The func has never been used - store the fact that the current method uses it with the current conditions set.
-                    //#warning how do we do this - two different funcs may have same conditions and use this so we shouldn't generate it twice.
-
-                    //                        signature.ConditionsWhenCalled = currentConditions;
-                    //                        callStatement.SetFunctionResolved(signature.Function, currentConditions);
-                    //                        //ast.Replace(callStatement, signature);
-                    //                    }
-                    //                    else if (signature.ConditionsWhenCompiled != null)
-                    //                    {
-                    //                        // If we're just reusing, don't do anything, but if we got here by a different path, dupliate the method.
-                    //                        if (DictionariesSame(signature.ConditionsWhenCalled, currentConditions))
-                    //#warning dodgy compare - need to do an order and case insensitive match above.
-                    //                        {
-                    //                            // do nothing - the method has already been coded to respond to these conditions ok.
-                    //                            //ast.Replace(callStatement, signature);
-
-                    //                            callStatement.SetFunctionResolved(signature.Function, currentConditions);
-                    //                        }
-                    //                        else
-                    //                        {
-                    //                            // Copy the function but with more specific preconditions - generate a new overload.
-                    //                            var duplicatedFunc = ast.DuplicateFunction(signature, currentConditions); // Duplicate the signature for the current conditions
-                    //                            // Replace the current line call with the overloaded version of the function.
-                    //                            callStatement.SetFunctionResolved(duplicatedFunc.Function, currentConditions);
-
-                    //                            //ast.Replace(callStatement, duplicatedFunc);
-                    //                        }
-                    //                    }
                 }
-
-                
-
-                // recurse
-                
             }
 
             // Apply post before pop out of the stack/recursion.  At bottom so not dependent on existence of other calls

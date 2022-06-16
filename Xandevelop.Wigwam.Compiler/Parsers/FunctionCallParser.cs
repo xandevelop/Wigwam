@@ -57,21 +57,6 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
 
         public string Description { get; set; }
 
-        
-
-        //public List<AstFunctionCallTemp> FunctionResolved { get; internal set; } = new List<AstFunctionCallTemp>();
-
-        //public void SetFunctionResolved(AstFunctionCallTemp funcCall)
-        //{
-        //    FunctionResolved.Add(funcCall);
-        //}
-        //public void SetFunctionResolved(List<AstFunctionCallTemp> funcCall)
-        //{
-        //    FunctionResolved.AddRange(funcCall);
-        //}
-
-
-
 
         // todo trace all uses and check if conditions needs to be mandatory
         public void SetFunctionResolved(AstFunction funcCall, Dictionary<string, string> conditions  )
@@ -112,20 +97,5 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
 
     }
 
-    //// Different from AstFunctionCall because this keeps a link back to the caller.
-    //public class AstFunctionCallTemp : IAstStatement
-    //{
-    //
-    //    public List<AstArgument> Arguments { get; set; }
-    //    public string Description { get; set; }
-    //
-    //    public AstFunction Function { get; set; } // Function after matching. Note: may still be multiple possible paths until inlining or execution because of how preconditions work.
-    //
-    //
-    //    // Store what conditions were used when this function was called.
-    //    // If we ever try to call the function again with different conditions, we'll duplicate it for easier use downstream.
-    //    // This helps with pre/post propagation, so we know what possible paths we can take out of this func deterministically rahter than saying
-    //    // "this func has n paths out" we can say with certainty exactly which path it'll follow because of the conditions when called.
-    //    public Dictionary<string, string> ConditionsWhenCalled { get; internal set; } = null; // Must have null default to indicate "not set yet" (ie. the func hasn't been called)
-    //}
+    
 }
