@@ -20,7 +20,7 @@ namespace Xandevelop.Wigwam.Ast
         {
             // todo - review whether func also needs copy?
             return new AstFunctionCall { Arguments = this.Arguments, Description = this.Description,
-                Method = this.Method,
+               
                 SourceFile = this.SourceFile,
                 SourceLine = this.SourceLine,
                 SourceLineNumber = this.SourceLineNumber

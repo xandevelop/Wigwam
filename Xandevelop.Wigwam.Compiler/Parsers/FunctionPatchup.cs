@@ -249,19 +249,6 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
         {
             return new PreConditionChecker().PreConditionsMet(preConditions, currentConditions);
         }
-
-        //private AstFunctionCallTemp BuildFuncCall(AstFunction astFunction, AstFunctionCallNoContext fc)
-        //{
-        //    return new AstFunctionCallTemp
-        //    {
-        //        SourceFile = fc.SourceFile,
-        //        SourceLine = fc.SourceLine,
-        //        SourceLineNumber = fc.SourceLineNumber,
-        //        Arguments = fc.ContextFreeArguments,
-        //        Description = fc.Description,
-        //        Function = astFunction,
-        //        //CallerMethod = fc
-        //    };
-        //}
+        
         }
     }

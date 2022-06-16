@@ -103,7 +103,6 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
                 ContextFreeArguments = this.ContextFreeArguments,
                 Description = this.Description,
                 Function = null,
-                Method = this.Method,
                 SourceFile = this.SourceFile,
                 SourceLine = this.SourceLine,
                 SourceLineForPatchup = this.SourceLineForPatchup,

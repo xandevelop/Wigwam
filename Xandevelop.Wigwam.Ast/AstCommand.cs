@@ -17,7 +17,7 @@ namespace Xandevelop.Wigwam.Ast
         public override IAstStatement CopyWithNewConditions(Dictionary<string, string> conditions)
         {
             return new AstCommand { Command = this.Command, Target = this.Target, Value = this.Value, Description = this.Description,
-                Method = this.Method,
+                
                 SourceFile = this.SourceFile,
                 SourceLine = this.SourceLine,
                 SourceLineNumber = this.SourceLineNumber

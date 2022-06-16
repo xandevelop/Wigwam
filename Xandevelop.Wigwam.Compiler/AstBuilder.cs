@@ -46,7 +46,6 @@ namespace Xandevelop.Wigwam.Compiler
             if (CurrentMethod != null)
             {
                 CurrentMethod.Statements.Add(statement);
-                statement.Method = CurrentMethod;
             }
 
             else throw new Exception("Precondition not met - must handle this in caller");
@@ -124,20 +123,7 @@ namespace Xandevelop.Wigwam.Compiler
             return result;
         }
 
-        internal void Replace(AstFunctionCallNoContext callStatement, AstFunctionCallNoContext duplicatedFunc)
-        {
-            Replace(callStatement, new AstFunctionCall
-            {
-                Function = duplicatedFunc.Function,
-                Arguments = duplicatedFunc.ContextFreeArguments,
-                Description = duplicatedFunc.Description,
-                Method = duplicatedFunc.Method,
-                SourceFile = duplicatedFunc.SourceFile,
-                SourceLine = duplicatedFunc.SourceLine,
-                SourceLineNumber = duplicatedFunc.SourceLineNumber
-            });
-        }
-
+        
         public void AddFunction(AstFunction astFunction)
         {
             CurrentMethod = astFunction;
@@ -151,17 +137,7 @@ namespace Xandevelop.Wigwam.Compiler
             Program.Controls.Add(control);
             
         }
-
-        // for patching up - we can swap a function call without context for one with context once we work out the correct context.
-        internal void Replace(AstFunctionCallNoContext fc, AstFunctionCall funcCall)
-        {
-            funcCall.Method = fc.Method;
-
-            var statements = fc.Method.Statements;
-            int index = statements.IndexOf(fc);
-            statements.RemoveAt(index);
-            statements.Insert(index, funcCall);
-        }
+        
 
         #endregion
 
