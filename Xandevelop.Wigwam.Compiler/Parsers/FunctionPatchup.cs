@@ -198,8 +198,22 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
                     }
                     if(matchedFuncsSubset.Count > 1)
                     {
-                        ast.AddError(StandardMessages.FunctionSignatureNotFound_MultiplePossibility_TooManyPreconditionMatches(callStatement.SourceLineForPatchup));
-                        return null;
+                        // Narrow down precondition match further...
+                        var subSubset = matchedFuncsSubset.Where(x => ConditionsWhenCompiledMet(x.ConditionsWhenCompiled, currentConditions)).ToList();
+
+                        if(subSubset.Count == 0)
+                        {
+                            // reasonably sure this can't happen or we'd be in a block above duplicating the signature.
+                            ast.AddError(StandardMessages.FunctionSignatureNotFound_MultiplePossibility_TooManyPreconditionMatches(callStatement.SourceLineForPatchup));
+                            return null;
+                        }
+                        if (subSubset.Count == 1) return subSubset.First();
+                        else
+                        {
+
+                            ast.AddError(StandardMessages.FunctionSignatureNotFound_MultiplePossibility_TooManyPreconditionMatches(callStatement.SourceLineForPatchup));
+                            return null;
+                        }
                     }
                 }
             }
@@ -211,6 +225,18 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
         {
             return new PreConditionChecker().PreConditionsMet(preConditions, currentConditions);
         }
-        
+        private bool ConditionsWhenCompiledMet(Dictionary<string, string> conditionsToMatch, Dictionary<string, string> currentConditions)
+        {
+            foreach(var ctm in conditionsToMatch)
+            {
+                if (currentConditions.ContainsKey(ctm.Key))
+                {
+                    if (ctm.Value != currentConditions[ctm.Key]) return false;
+                }
+                else return false;
+            }
+            return true;
         }
+
     }
+}
