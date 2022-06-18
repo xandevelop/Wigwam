@@ -19,7 +19,7 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
                 Dictionary<string, string> currentConditions = new Dictionary<string, string>();
                 ParseStatements(ast, null /*curr func null because this is a test not func*/, test.Statements, currentConditions);
             }
-            // what about functions that haven't been called
+#warning todo what about functions that haven't been called
         }
         private void ParseStatements(AstBuilder ast, AstFunction currentFunction, List<Ast.IAstStatement> statements, Dictionary<string, string> currentConditions)
         {
@@ -28,7 +28,7 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
                 var signature = FindBestSignature(ast, callStatement, currentConditions);
                 if (signature == null)
                 {
-                    // error - could not find
+                    // error - could not find.  Not logged to AST here because FindBestSignature already gives more specific error messages.
                     continue; // try the next one, don't throw 
                               // note: we may end up with spurious errors because the func you meant to call had a postcondition
                               // that when missed causes subsequent calls to fail so we may want to consider halting execution here until the next test
