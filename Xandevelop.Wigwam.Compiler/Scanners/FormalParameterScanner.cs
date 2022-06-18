@@ -40,7 +40,8 @@ namespace Xandevelop.Wigwam.Compiler.Scanners
         }
         private (string Part0, string Part1) Split2(string s, char splitChar)
         {
-            var parts = s.Split(new[] { splitChar }, 2).ToList();
+            var parts = s.SplitWithEscape(new[] { splitChar }, 2).ToList();
+
             switch (parts.Count)
             {
                 case 0: return (null, null);

@@ -59,6 +59,7 @@
     <Compile Include="Parsers\TestDeclarationParser.cs" />
     <Compile Include="PreConditionChecker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scanners\StringExns.cs" />
     <Compile Include="Scanners\ArgumentScanner.cs" />
     <Compile Include="Scanners\FileScanner.cs" />
     <Compile Include="Scanners\FormalParameterScanner.cs" />

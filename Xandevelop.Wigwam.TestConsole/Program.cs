@@ -12,11 +12,15 @@ namespace Xandevelop.Wigwam.TestConsole
     {
         static void Main(string[] args)
         {
+            //new StringSplitterTests().Test();
+
             //new CompilerTests().TestIndirectPreConditions1();
             //return;
 
             // Console app to test things as we go
             var c = Compiler.Compiler.DefaultCompiler();
+            c.BreakOnError = true;
+
             var fileReader =
                 new MockFileReader("default", @"
 test | i can log in

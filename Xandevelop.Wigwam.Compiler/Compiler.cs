@@ -16,6 +16,9 @@ namespace Xandevelop.Wigwam.Compiler
     {
         private Compiler() { }
 
+        // should the C# code break when a compile error is found? Useful for debugging when you don't expect an error.
+        public bool BreakOnError { get; set; }
+
         public static Compiler DefaultCompiler()
         {
             Compiler c = new Compiler();
@@ -56,6 +59,8 @@ namespace Xandevelop.Wigwam.Compiler
         public (AstProgram ast, IEnumerable<CompileMessage> compileErrors) Compile(string filePath)
         {
             AstBuilder astBuilder = new AstBuilder(filePath);
+            astBuilder.BreakOnError = this.BreakOnError;
+
             FirstPass(filePath, astBuilder);
             SecondPass(astBuilder);
             return (astBuilder.Program, astBuilder.CompileMessages);

@@ -110,11 +110,13 @@ namespace Xandevelop.Wigwam.Compiler
             Program.Controls.Add(control);
             
         }
-        
+
 
         #endregion
 
         #region Error Handling
+
+        public bool BreakOnError { get; set; }
 
         public Line CurrentLine { get; set; }
         private List<CompileMessage> _compileMessages { get; } = new List<CompileMessage>();
@@ -124,6 +126,11 @@ namespace Xandevelop.Wigwam.Compiler
 
         public void AddError(string error)
         {
+            if(BreakOnError)
+            {
+                System.Diagnostics.Debugger.Break();
+            }
+
             _compileMessages.Add(new CompileMessage
             {
                 MessageType = CompileMessageType.Error,
