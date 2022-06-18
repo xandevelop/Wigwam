@@ -26,11 +26,11 @@ namespace Xandevelop.Wigwam.TestConsole
 test | i can log in
 open login page
 submit form
-
+#line 5
 test | i can email admin
 open contact page
 submit form
-
+#line 9
 test | i can email and reuse func
 open contact page
 submit form
@@ -39,7 +39,7 @@ submit form
 func | open login page
 echo | login page opened
 post | page | login
-
+#line 18
 # x1
 func | open contact page
 echo | contact page opened
@@ -49,12 +49,12 @@ post | page | contact
 func | submit form
 echo | submitting form
 click submit
-
+# line 28
 # x1
 func | click submit
 pre | page | login
 echo | clicked submit on login page
-
+# line 33
 # x1
 func | click submit
 pre | page | contact
