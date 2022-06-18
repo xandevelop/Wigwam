@@ -39,10 +39,11 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
         private void ParseClick(AstBuilder ast, Line line)
         {
             var args = ArgumentScanner.ScanLineArguments(line, new ExpectedArgument { Name = "target" });
-            ArgumentData targetArgument = null;
+            
 
-            args.Match(arguments => targetArgument = arguments.First(x => x.Name == "target"),
-                errors => throw new Exception(errors.First().Name));
+            if (args.IsError) { ast.AddArgumentErrors(args.ArgumentErrors); return; }
+            ArgumentData targetArgument = args["target"];
+            
 
             if (ast.HasCurrentMethod)
             {
@@ -64,11 +65,10 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
         private void ParseEcho(AstBuilder ast, Line line)
         {
             var args = ArgumentScanner.ScanLineArguments(line, new ExpectedArgument { Name = "target" });
-            ArgumentData targetArgument = null;
-
-            args.Match(arguments => targetArgument = arguments.First(x => x.Name == "target"),
-                errors => throw new Exception(errors.First().Name));
-
+            
+            if (args.IsError) { ast.AddArgumentErrors(args.ArgumentErrors); return; }
+            ArgumentData targetArgument = args["target"];
+            
             if (ast.HasCurrentMethod)
             {
                 ast.AddStatementToCurrentMethod(new AstCommand

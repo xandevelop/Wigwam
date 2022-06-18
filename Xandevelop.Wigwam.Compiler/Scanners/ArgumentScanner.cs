@@ -17,15 +17,7 @@ namespace Xandevelop.Wigwam.Compiler.Scanners
 
         public static implicit operator ArgumentDataOrError(List<ArgumentData> data) => new ArgumentDataOrError { ArgumentData = data };
         public static implicit operator ArgumentDataOrError(List<ArgumentError> errors) => new ArgumentDataOrError { ArgumentErrors = errors };
-
-        [Obsolete("Happier with implementation of PreConditionParser and PostConditionParser so copy the way they do this instead")]
-        public void Match(Action<List<ArgumentData>> matchArguments, Action<List<ArgumentError>> matchErrors)
-        {
-            if (ArgumentData != null) { matchArguments(ArgumentData); return; }
-            else if (ArgumentErrors != null) { matchErrors(ArgumentErrors); return; }
-            throw new Exception("Value not set");
-        }
-
+        
         public ArgumentData this[string name]
         {
             get
