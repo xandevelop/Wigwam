@@ -76,6 +76,8 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
             ArgumentScanner s = new ArgumentScanner();
             List<AstFunction> matchedFuncs = new List<AstFunction>();
 
+            ast.CurrentLine = callStatement.SourceLineForPatchup;
+
             // First, the function name must match
             List<AstFunction> functionsWithRightName = ast.Program.Functions.Where(x => x.Name.Trim().ToLower() == callStatement.FunctionName.Trim().ToLower()).ToList();
 
