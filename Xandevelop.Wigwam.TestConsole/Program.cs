@@ -12,7 +12,7 @@ namespace Xandevelop.Wigwam.TestConsole
     {
         static void Main(string[] args)
         {
-            //new CompilerTests().TestCanCallFunction_NoParameters_NoConditions();
+            //new CompilerTests().TestIndirectPreConditions1();
             //return;
 
             // Console app to test things as we go
@@ -27,26 +27,31 @@ test | i can email admin
 open contact page
 submit form
 
-#test | i can email and reuse func
-#open contact page
-#submit form
+test | i can email and reuse func
+open contact page
+submit form
 
+# x1
 func | open login page
 echo | login page opened
 post | page | login
 
+# x1
 func | open contact page
 echo | contact page opened
 post | page | contact
 
+# Should duplicate x2
 func | submit form
 echo | submitting form
 click submit
 
+# x1
 func | click submit
 pre | page | login
 echo | clicked submit on login page
 
+# x1
 func | click submit
 pre | page | contact
 echo | clicked submit on contact page
@@ -79,7 +84,7 @@ echo | clicked submit on contact page
             var ast = c.Compile("default");
 
 
-            var xx = ast.ast.Tests.First().Statements.Last();
+            //var xx = ast.ast.Tests.First().Statements.Last();
 
         }
 

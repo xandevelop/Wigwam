@@ -63,13 +63,26 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
         {
             //if (Function != null) throw new Exception("Cannot set function multiple times");
             Function = funcCall;
-            ConditionsWhenCalled = conditions;
+            ConditionsWhenCalled = CopyConditionsWhenCalled(conditions);
         }
 
         internal void SetFunctionNotResolved(Dictionary<string, string> conditions)
         {
             Function = null;
-            ConditionsWhenCalled = conditions;
+            ConditionsWhenCalled = CopyConditionsWhenCalled(conditions);
+        }
+
+        // Note: Think this is needed, but location is terrible and should move to a util class later
+        public static Dictionary<string, string> CopyConditionsWhenCalled(Dictionary<string, string> conditions)
+        {
+            Dictionary<string, string> copy = new Dictionary<string, string>();
+            {
+                foreach(var kvp in conditions)
+                {
+                    copy.Add(kvp.Key, kvp.Value);
+                }
+            }
+            return copy;
         }
 
         
@@ -84,7 +97,7 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
             return new AstFunctionCallNoContext
             {
                 FunctionName = this.FunctionName,
-                ConditionsWhenCalled = conditions,
+                ConditionsWhenCalled = CopyConditionsWhenCalled(conditions),
                 ContextFreeArguments = this.ContextFreeArguments,
                 Description = this.Description,
                 Function = null,

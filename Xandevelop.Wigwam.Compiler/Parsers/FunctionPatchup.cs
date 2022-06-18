@@ -126,7 +126,7 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
                     else
                     {
                         // Func has never been called before so record that we have called it here now before we reutnr it
-                        candidateFunction.ConditionsWhenCompiled = currentConditions;
+                        candidateFunction.ConditionsWhenCompiled = AstFunctionCallNoContext.CopyConditionsWhenCalled(currentConditions);
                     }
 
                     //callStatement.SetFunctionResolved(functionsWithRightName.First(), currentConditions);
@@ -189,7 +189,7 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
                         else
                         {
                             // Func has never been called before so record that we have called it here now before we reutnr it
-                            candidateFunction.ConditionsWhenCompiled = currentConditions;
+                            candidateFunction.ConditionsWhenCompiled = AstFunctionCallNoContext.CopyConditionsWhenCalled(currentConditions);
                         }
 
                         return candidateFunction;

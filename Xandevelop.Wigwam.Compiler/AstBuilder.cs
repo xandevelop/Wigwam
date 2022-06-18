@@ -86,7 +86,7 @@ namespace Xandevelop.Wigwam.Compiler
                 func.PreConditions.Add(new AstPreCondition { Variable = x.Key, Value = x.Value, Comparison = PreConditionComparisonType.Equals,
                     SourceFile = method.SourceFile, SourceLine = "(Automatically Generated PreCondition)", SourceLineNumber = method.SourceLineNumber });
             }
-            func.ConditionsWhenCompiled = conditionsWhenCalled;
+            func.ConditionsWhenCompiled = AstFunctionCallNoContext.CopyConditionsWhenCalled(conditionsWhenCalled);
 
             Program.Functions.Add(func);
             AllMethods.Add(func);
