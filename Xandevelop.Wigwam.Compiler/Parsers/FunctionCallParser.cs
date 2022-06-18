@@ -58,5 +58,57 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
         public string Description { get; set; }
 
 
+        // todo trace all uses and check if conditions needs to be mandatory
+        public void SetFunctionResolved(AstFunction funcCall, Dictionary<string, string> conditions  )
+        {
+            //if (Function != null) throw new Exception("Cannot set function multiple times");
+            Function = funcCall;
+            ConditionsWhenCalled = CopyConditionsWhenCalled(conditions);
+        }
+
+        internal void SetFunctionNotResolved(Dictionary<string, string> conditions)
+        {
+            Function = null;
+            ConditionsWhenCalled = CopyConditionsWhenCalled(conditions);
+        }
+
+        // Note: Think this is needed, but location is terrible and should move to a util class later
+        public static Dictionary<string, string> CopyConditionsWhenCalled(Dictionary<string, string> conditions)
+        {
+            Dictionary<string, string> copy = new Dictionary<string, string>();
+            {
+                foreach(var kvp in conditions)
+                {
+                    copy.Add(kvp.Key, kvp.Value);
+                }
+            }
+            return copy;
+        }
+
+        
+
+        public AstFunction Function { get; private set; } // Function after matching
+        public Dictionary<string, string> ConditionsWhenCalled { get; internal set; } = null;
+
+
+
+        public override IAstStatement CopyWithNewConditions(Dictionary<string, string> conditions)
+        {
+            return new AstFunctionCallNoContext
+            {
+                FunctionName = this.FunctionName,
+                ConditionsWhenCalled = CopyConditionsWhenCalled(conditions),
+                ContextFreeArguments = this.ContextFreeArguments,
+                Description = this.Description,
+                Function = null,
+                SourceFile = this.SourceFile,
+                SourceLine = this.SourceLine,
+                SourceLineForPatchup = this.SourceLineForPatchup,
+                SourceLineNumber = this.SourceLineNumber
+            };
+        }
+
     }
+
+    
 }

@@ -27,7 +27,7 @@ namespace Xandevelop.Wigwam.Compiler
         public bool CurrentMethodIsFunction => CurrentMethod is AstFunction;
 
         public List<IAstMethod> AllMethods { get; set; } = new List<IAstMethod>();
-
+        
         #endregion
 
         #region Build/Add Methods
@@ -46,7 +46,6 @@ namespace Xandevelop.Wigwam.Compiler
             if (CurrentMethod != null)
             {
                 CurrentMethod.Statements.Add(statement);
-                statement.Method = CurrentMethod;
             }
 
             else throw new Exception("Precondition not met - must handle this in caller");
@@ -61,6 +60,43 @@ namespace Xandevelop.Wigwam.Compiler
             AllMethods.Add(astTest);
         }
 
+        public AstFunction DuplicateFunction(AstFunction method, Dictionary<string, string> conditionsWhenCalled)
+        {
+            AstFunction func = new AstFunction()
+            {
+                Name = method.Name,
+                FormalParameters = method.FormalParameters,
+                PostConditions = method.PostConditions,
+                Description = method.Description,
+                OverloadGeneratedFrom = method,
+                SourceFile = method.SourceFile,
+                SourceLine = method.SourceLine,
+                SourceLineNumber = method.SourceLineNumber
+            };
+
+            // Can't do Statements = method.Statements - we need a value copy, not a reference copy.
+            foreach(var s in method.Statements)
+            {
+                func.Statements.Add(s.CopyWithNewConditions(conditionsWhenCalled));
+            }
+
+            
+            foreach (var x in conditionsWhenCalled)
+            {
+                func.PreConditions.Add(new AstPreCondition { Variable = x.Key, Value = x.Value, Comparison = PreConditionComparisonType.Equals,
+                    SourceFile = method.SourceFile, SourceLine = "(Automatically Generated PreCondition)", SourceLineNumber = method.SourceLineNumber });
+            }
+            func.ConditionsWhenCompiled = AstFunctionCallNoContext.CopyConditionsWhenCalled(conditionsWhenCalled);
+
+            Program.Functions.Add(func);
+            AllMethods.Add(func);
+
+            return func;
+        }
+
+        
+
+        
         public void AddFunction(AstFunction astFunction)
         {
             CurrentMethod = astFunction;
@@ -74,17 +110,7 @@ namespace Xandevelop.Wigwam.Compiler
             Program.Controls.Add(control);
             
         }
-
-        // for patching up - we can swap a function call without context for one with context once we work out the correct context.
-        internal void Replace(AstFunctionCallNoContext fc, AstFunctionCall funcCall)
-        {
-            funcCall.Method = fc.Method;
-
-            var statements = fc.Method.Statements;
-            int index = statements.IndexOf(fc);
-            statements.RemoveAt(index);
-            statements.Insert(index, funcCall);
-        }
+        
 
         #endregion
 

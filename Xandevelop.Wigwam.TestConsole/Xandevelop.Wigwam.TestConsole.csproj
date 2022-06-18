@@ -59,6 +59,10 @@
       <Project>{FEB57CE8-3963-4EDC-9919-3D768278CBD7}</Project>
       <Name>Xandevelop.Wigwam.Compiler</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XanDevelop.Wigwam.Tests\XanDevelop.Wigwam.Tests.csproj">
+      <Project>{2ca16841-4792-48b4-ac61-379f07eca49b}</Project>
+      <Name>XanDevelop.Wigwam.Tests</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -128,8 +128,11 @@ namespace Xandevelop.Wigwam.Compiler
             // but since functions may be declared AFTER they're used, we can't determine if they're valid until all files are fully read.
             // So second pass just goes over what is in the builder and verifies anything that needed the full context to determine validity.
 
-            FunctionPatchupParser fpp = new FunctionPatchupParser();
-            fpp.Parse(astBuilder);
+            //FunctionPatchupParser fpp = new FunctionPatchupParser();
+            //fpp.Parse(astBuilder);
+
+            FunctionPatchup fp = new FunctionPatchup();
+            fp.Parse(astBuilder);
 
         }
 

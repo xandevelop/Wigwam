@@ -44,6 +44,9 @@ namespace Xandevelop.Wigwam.Compiler
         public static string FunctionSignatureNotFound_SinglePossibility_ArgumentsIncorrect(Line l) => $"Function {l.Command} could not be matched.  Argument mismatch.  You seem to be trying to use this function, but the arguments you have specified are invalid.";
         public static string FunctionSignatureNotFound_MultiplePossibility_ArgumentsIncorrect(Line l) => $"Function {l.Command} could not be matched.  Ambiguous invocation.  There are multiple functions that might match, but the compiler cannot work out which one you mean.  Change the parameters or preconditions of the functions so it is clearer which one you are trying to use.";
 
+        public static string FunctionSignatureNotFound_MultiplePossibility_PreConditionsNotMet(Line l) => $"Function {l.Command} could not be matched.  Ambiguous invocation.  There are multiple functions that might match, but the compiler cannot work out which one you mean.  Change the parameters or preconditions of the functions so it is clearer which one you are trying to use.";
+        public static string FunctionSignatureNotFound_MultiplePossibility_TooManyPreconditionMatches(Line l) => "too many matches";
+#warning write better error message
     }
 
     public static class StringExn
