@@ -25,6 +25,20 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
         {
             foreach (var callStatement in statements.Where(x => x is AstFunctionCallNoContext).Cast<AstFunctionCallNoContext>().ToList())
             {
+                // Maybe this is really a command we haven't recognised sooner?  Note: commands MUST NOT have same names as functions.
+                if (ast.Program.CommandDefinitions.Any(x => x.Name == callStatement.FunctionName))
+                {
+                    var cmdDef = ast.Program.CommandDefinitions.First(x => x.Name == callStatement.FunctionName);
+                    callStatement.Command = new AstCommand
+                    {
+                        Command = callStatement.FunctionName,
+                        Description = callStatement.Description,
+                        Arguments = callStatement.ContextFreeArguments,
+                        CommandDefinition = cmdDef
+                    };
+                    continue;
+                }
+
                 var signature = FindBestSignature(ast, callStatement, currentConditions);
                 if (signature == null)
                 {

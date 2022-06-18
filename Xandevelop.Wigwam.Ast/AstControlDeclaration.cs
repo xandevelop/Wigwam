@@ -22,4 +22,6 @@ namespace Xandevelop.Wigwam.Ast
         public SelectorStrategy Strategy { get; set; }
         public string Description { get; set; }
     }
+
+    
 }

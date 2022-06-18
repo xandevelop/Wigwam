@@ -38,6 +38,7 @@ namespace Xandevelop.Wigwam.Compiler
             c.LineParsers.Add(new PreConditionParser());
             c.LineParsers.Add(new PostConditionParser());
             c.LineParsers.Add(new ControlDeclarationParser());
+            c.LineParsers.Add(new CommandDefinitionParser());
             
             //c.LineParsers.Add(new VariableDeclarationParser()); // Maybe?
 

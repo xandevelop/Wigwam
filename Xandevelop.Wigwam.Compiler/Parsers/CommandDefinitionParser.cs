@@ -8,20 +8,20 @@ using Xandevelop.Wigwam.Compiler.Scanners;
 
 namespace Xandevelop.Wigwam.Compiler.Parsers
 {
-    public class FunctionDeclarationParser : ILineParser
+    public class CommandDefinitionParser : ILineParser
     {
-        public string Name => "Function Declaration";
+        public string Name => "Command Definition";
 
         public int OrderNumber => 1;
 
         public bool IsMatch(Line line)
         {
-            return line.Command == "func" || line.Command == "function";
+            return line.Command == "cmd" || line.Command == "command";
         }
 
         public void Parse(AstBuilder ast, Line line)
         {
-            AstFunction astFunction = new AstFunction
+            AstCommandDefinition astCmd = new AstCommandDefinition
             {
                 SourceFile = line.SourceFile,
                 SourceLine = line.SourceLine,
@@ -29,12 +29,11 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
 
                 Name = line.Blocks.First(),
                 Description = line.CommentBlock,
-                Statements = new List<IAstStatement>()
             };
 
-            astFunction.FormalParameters = new FormalParameterScanner().Scan(line);
-            
-            ast.AddFunction(astFunction);
+            astCmd.FormalParameters = new FormalParameterScanner().Scan(line);
+
+            ast.AddCommandDefinition(astCmd);
         }
     }
 }

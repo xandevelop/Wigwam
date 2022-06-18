@@ -18,6 +18,9 @@ namespace Xandevelop.Wigwam.Ast
         public List<AstFunction> Functions { get; set; } = new List<AstFunction>();
 
         public List<AstControlDeclaration> Controls { get; set; } = new List<AstControlDeclaration>();
+
+        // Extra "plugin" commands (easier than writing a real plugin)
+        public List<AstCommandDefinition> CommandDefinitions { get; set; } = new List<AstCommandDefinition>();
     }
 
 

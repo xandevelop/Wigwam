@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="AstBase.cs" />
     <Compile Include="AstCommand.cs" />
+    <Compile Include="AstCommandDefinition.cs" />
     <Compile Include="AstControlDeclaration.cs" />
     <Compile Include="AstFormalParameter.cs" />
     <Compile Include="AstFunction.cs" />

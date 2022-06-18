@@ -47,13 +47,15 @@
     <Compile Include="CompileMessage.cs" />
     <Compile Include="Compiler.cs" />
     <Compile Include="FileReader.cs" />
+    <Compile Include="Parsers\CommandDefinitionParser.cs" />
     <Compile Include="Parsers\CommandParser.cs" />
     <Compile Include="Parsers\ControlDeclarationParser.cs" />
     <Compile Include="Parsers\FunctionCallParser.cs" />
     <Compile Include="Parsers\FunctionDeclarationParser.cs" />
-    <Compile Include="Parsers\FunctionPatchup.cs" />
+    <Compile Include="Parsers\SecondPass\CommentGenerator.cs" />
+    <Compile Include="Parsers\SecondPass\FunctionPatchup.cs" />
     <Compile Include="Parsers\ILineParser.cs" />
-    <Compile Include="Parsers\ISecondPassParser.cs" />
+    <Compile Include="Parsers\SecondPass\ISecondPassParser.cs" />
     <Compile Include="Parsers\PostConditionParser.cs" />
     <Compile Include="Parsers\PreConditionParser.cs" />
     <Compile Include="Parsers\TestDeclarationParser.cs" />

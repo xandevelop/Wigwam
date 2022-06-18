@@ -36,6 +36,9 @@ namespace Xandevelop.Wigwam.Compiler
         {
             (CurrentMethod as AstFunction).PreConditions.Add(pre);
         }
+
+        
+
         public void AddPostCondition(AstPostCondition post)
         {
             (CurrentMethod as AstFunction).PostConditions.Add(post);
@@ -50,6 +53,7 @@ namespace Xandevelop.Wigwam.Compiler
 
             else throw new Exception("Precondition not met - must handle this in caller");
         }
+
         
         public void AddTest(AstTest astTest)
         {
@@ -110,7 +114,11 @@ namespace Xandevelop.Wigwam.Compiler
             Program.Controls.Add(control);
             
         }
-
+        internal void AddCommandDefinition(AstCommandDefinition astCmd)
+        {
+            CurrentMethod = null;
+            Program.CommandDefinitions.Add(astCmd);
+        }
 
         #endregion
 

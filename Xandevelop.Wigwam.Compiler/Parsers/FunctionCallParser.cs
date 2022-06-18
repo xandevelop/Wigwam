@@ -59,7 +59,7 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
 
 
         // todo trace all uses and check if conditions needs to be mandatory
-        public void SetFunctionResolved(AstFunction funcCall, Dictionary<string, string> conditions  )
+        public void SetFunctionResolved(AstFunction funcCall, Dictionary<string, string> conditions)
         {
             //if (Function != null) throw new Exception("Cannot set function multiple times");
             Function = funcCall;
@@ -77,7 +77,7 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
         {
             Dictionary<string, string> copy = new Dictionary<string, string>();
             {
-                foreach(var kvp in conditions)
+                foreach (var kvp in conditions)
                 {
                     copy.Add(kvp.Key, kvp.Value);
                 }
@@ -85,12 +85,12 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
             return copy;
         }
 
-        
+
 
         public AstFunction Function { get; private set; } // Function after matching
         public Dictionary<string, string> ConditionsWhenCalled { get; internal set; } = null;
 
-
+        public AstCommand Command { get; set; }// Command after matching (i.e. this isn't a full function, only a command, (sort of like a header)
 
         public override IAstStatement CopyWithNewConditions(Dictionary<string, string> conditions)
         {
