@@ -13,7 +13,7 @@ namespace Xandevelop.Wigwam.Compiler.Scanners
         public List<ArgumentData> ArgumentData { get; set; }
         public List<ArgumentError> ArgumentErrors { get; set; }
 
-        public bool IsError => ArgumentData == null;
+        public bool IsError => ArgumentErrors != null;
 
         public static implicit operator ArgumentDataOrError(List<ArgumentData> data) => new ArgumentDataOrError { ArgumentData = data };
         public static implicit operator ArgumentDataOrError(List<ArgumentError> errors) => new ArgumentDataOrError { ArgumentErrors = errors };
