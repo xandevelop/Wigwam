@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Xandevelop.Wigwam.Compiler.Parsers.SecondPass
+﻿namespace Xandevelop.Wigwam.Compiler.Parsers.SecondPass
 {
     // As we patch statements up, any with a null description MAY get an auto generated description.
     // This is based on things like "did we reference a control in the target", which we don't really know until after first pass.
