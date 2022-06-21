@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xandevelop.Wigwam.TestConso
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XanDevelop.Wigwam.Tests", "XanDevelop.Wigwam.Tests\XanDevelop.Wigwam.Tests.csproj", "{2CA16841-4792-48B4-AC61-379F07ECA49B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xandevelop.Wigwam.Outputs", "Xandevelop.Wigwam.Outputs\Xandevelop.Wigwam.Outputs.csproj", "{74CDA541-4DD3-4112-87C3-D2FEB8C7FDB1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{2CA16841-4792-48B4-AC61-379F07ECA49B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CA16841-4792-48B4-AC61-379F07ECA49B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CA16841-4792-48B4-AC61-379F07ECA49B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74CDA541-4DD3-4112-87C3-D2FEB8C7FDB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74CDA541-4DD3-4112-87C3-D2FEB8C7FDB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74CDA541-4DD3-4112-87C3-D2FEB8C7FDB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74CDA541-4DD3-4112-87C3-D2FEB8C7FDB1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

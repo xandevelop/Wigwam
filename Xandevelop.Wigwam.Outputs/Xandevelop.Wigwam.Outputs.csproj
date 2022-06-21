@@ -4,17 +4,18 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FEB57CE8-3963-4EDC-9919-3D768278CBD7}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Xandevelop.Wigwam.Compiler</RootNamespace>
-    <AssemblyName>Xandevelop.Wigwam.Compiler</AssemblyName>
+    <ProjectGuid>{74CDA541-4DD3-4112-87C3-D2FEB8C7FDB1}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Xandevelop.Wigwam.Outputs</RootNamespace>
+    <AssemblyName>Xandevelop.Wigwam.Outputs</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,6 +25,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -42,40 +44,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AstBuilder.cs" />
-    <Compile Include="BuiltInCommandSignature.cs" />
-    <Compile Include="CompileMessage.cs" />
-    <Compile Include="Compiler.cs" />
-    <Compile Include="FileReader.cs" />
-    <Compile Include="Parsers\CommandDefinitionParser.cs" />
-    <Compile Include="Parsers\CommandParser.cs" />
-    <Compile Include="Parsers\ControlDeclarationParser.cs" />
-    <Compile Include="Parsers\FunctionCallParser.cs" />
-    <Compile Include="Parsers\FunctionDeclarationParser.cs" />
-    <Compile Include="Parsers\SecondPass\CommentGenerator.cs" />
-    <Compile Include="Parsers\SecondPass\FunctionPatchup.cs" />
-    <Compile Include="Parsers\ILineParser.cs" />
-    <Compile Include="Parsers\SecondPass\ISecondPassParser.cs" />
-    <Compile Include="Parsers\PostConditionParser.cs" />
-    <Compile Include="Parsers\PreConditionParser.cs" />
-    <Compile Include="Parsers\TestDeclarationParser.cs" />
-    <Compile Include="PreConditionChecker.cs" />
-    <Compile Include="ProgramVisitor.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scanners\StringExns.cs" />
-    <Compile Include="Scanners\ArgumentScanner.cs" />
-    <Compile Include="Scanners\FileScanner.cs" />
-    <Compile Include="Scanners\FormalParameterScanner.cs" />
-    <Compile Include="Scanners\Line.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Samples\HelloWorld.tpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Xandevelop.Wigwam.Ast\Xandevelop.Wigwam.Ast.csproj">
       <Project>{d3c06b05-20fd-4153-adb1-d5be1ecfdfdf}</Project>
       <Name>Xandevelop.Wigwam.Ast</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Todo.todo" />
+    <ProjectReference Include="..\Xandevelop.Wigwam.Compiler\Xandevelop.Wigwam.Compiler.csproj">
+      <Project>{feb57ce8-3963-4edc-9919-3d768278cbd7}</Project>
+      <Name>Xandevelop.Wigwam.Compiler</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
