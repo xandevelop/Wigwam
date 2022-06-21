@@ -140,9 +140,9 @@ namespace Xandevelop.Wigwam.Compiler.Scanners
             return default(T); // null, probably
         }
 
-        private (string Part0, string Part1) Split2(string s, char splitChar)
+        private (string Part0, string Part1) Split2(string s)
         {
-            var parts = s.SplitWithEscape(new[] { splitChar }, 2).ToList();
+            var parts = s.SplitWithEscape(new[] { ':','=' }, 2).ToList();
             switch (parts.Count)
             {
                 case 0: return (null, null);
@@ -153,7 +153,7 @@ namespace Xandevelop.Wigwam.Compiler.Scanners
         }
         private (string Name, string Value) SplitNameValue(string s)
         {
-            var split2 = Split2(s, ':');
+            var split2 = Split2(s);
             if (split2.Part1 == null)
             {
                 // No name was specified

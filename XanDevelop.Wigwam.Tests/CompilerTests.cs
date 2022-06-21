@@ -36,7 +36,7 @@ namespace XanDevelop.Wigwam.Tests
             {
                 Command = "echo",
                 Description = description,
-                Target = target,
+                Target = target
             };
         }
         private IAstStatement Call(AstFunction func_say_hello, List<AstArgument> arguments = null, string description = null)
@@ -47,7 +47,7 @@ namespace XanDevelop.Wigwam.Tests
             {
                 Function = func_say_hello,
                 Arguments = arguments,
-                Description = description,
+                Description = description
             };
         }
 
@@ -277,7 +277,7 @@ echo | clicked submit on contact page
                 {
                     Echo("submitting form"),
                     Call(func_click_submit_login)
-                },
+                }
             };
             var func_submit_form_2 = new AstFunction
             {

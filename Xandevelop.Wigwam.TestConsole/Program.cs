@@ -34,12 +34,12 @@ submit form
 
 # x1
 func | open login page
-echo | login page opened
+echo | target:login page opened
 post | page | login
 
 # x1
 func | open contact page
-echo | contact page opened
+echo | target=contact page opened
 post | page | contact
 
 # Should duplicate x2
