@@ -102,7 +102,7 @@ namespace Xandevelop.Wigwam.Outputs.TargetLanguages
         public CurrentScope(string name, string url)
         {
             var suite = new Suite { Id = Guid.NewGuid(), Name = "DefaultSuite", Tests = new List<Guid>() };
-            TestFile = new SideTest { Id = Guid.NewGuid(), Name = name, Url = url, Urls = new List<string> { url }, Suites = new List<Suite> { suite } };
+            TestFile = new SideTest { Id = Guid.NewGuid(), Name = name, Url = url, Urls = new List<string> { url }, Suites = new List<Suite> { suite }, Version = "2.0" };
         }
          
 
