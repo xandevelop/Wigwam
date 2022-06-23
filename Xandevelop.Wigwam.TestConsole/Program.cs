@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Xandevelop.Wigwam.Ast;
 using Xandevelop.Wigwam.Compiler;
 
 namespace Xandevelop.Wigwam.TestConsole
@@ -7,6 +8,19 @@ namespace Xandevelop.Wigwam.TestConsole
     {
         static void Main(string[] args)
         {
+            AstArgument argCut = new AstArgument();
+
+            var x = argCut.Parts;
+
+            argCut.Value = "hello there";
+            argCut.Value = "hello ${user name}";
+            argCut.Value = "hello ${user name} world";
+            argCut.Value = "hello ${user name";
+            argCut.Value = "hello \\${user name}";
+            argCut.Value = "${user name} hello";
+            argCut.Value = "hello ${} world";
+            return;
+
             //new StringSplitterTests().Test();
 
             //new CompilerTests().TestIndirectPreConditions1();

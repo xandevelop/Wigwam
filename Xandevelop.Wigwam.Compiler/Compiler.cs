@@ -2,6 +2,7 @@
 using System.Linq;
 using Xandevelop.Wigwam.Ast;
 using Xandevelop.Wigwam.Compiler.Parsers;
+using Xandevelop.Wigwam.Compiler.Parsers.SecondPass;
 using Xandevelop.Wigwam.Compiler.Scanners;
 
 namespace Xandevelop.Wigwam.Compiler
@@ -27,8 +28,8 @@ namespace Xandevelop.Wigwam.Compiler
             };
 
             c.LineParsers = new List<ILineParser>();
-            c.LineParsers.Add(new CommandParser()); // click, echo, screenshot, speak, assert, verify, store
-            c.LineParsers.Add(new FunctionCallParser());
+            //c.LineParsers.Add(new CommandParser()); // click, echo, screenshot, speak, assert, verify, store
+            c.LineParsers.Add(new InstructionParser());
             c.LineParsers.Add(new TestDeclarationParser());
             c.LineParsers.Add(new FunctionDeclarationParser());
             c.LineParsers.Add(new PreConditionParser());
@@ -58,6 +59,9 @@ namespace Xandevelop.Wigwam.Compiler
             AstBuilder astBuilder = new AstBuilder(filePath);
             astBuilder.BreakOnError = this.BreakOnError;
 
+            astBuilder.AddCommandDefinitions(BuiltInCommandList);
+            
+
             FirstPass(filePath, astBuilder);
             SecondPass(astBuilder);
             return (astBuilder.Program, astBuilder.CompileMessages);
@@ -70,6 +74,7 @@ namespace Xandevelop.Wigwam.Compiler
         // WARNING: Recursive
         private void FirstPass(string filePath, AstBuilder astBuilder)
         {
+            
             
             FileScanner fileScanner = new FileScanner();
             List<Line> lines = fileScanner.ReadLines(filePath, FileReader.ReadAllText(filePath));
@@ -136,6 +141,8 @@ namespace Xandevelop.Wigwam.Compiler
             FunctionPatchup fp = new FunctionPatchup();
             fp.Parse(astBuilder);
 
+            //VariablePatchup vp = new VariablePatchup();
+            //vp.Parse(astBuilder);
         }
 
         

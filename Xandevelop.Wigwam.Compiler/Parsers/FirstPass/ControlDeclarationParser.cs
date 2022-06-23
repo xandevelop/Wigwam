@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Xandevelop.Wigwam.Ast;
 using Xandevelop.Wigwam.Compiler.Scanners;
 
 namespace Xandevelop.Wigwam.Compiler.Parsers
@@ -27,13 +28,13 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
             // Control | name:abc | someselector         # only selector, assumed to be xpath (when block count is 2)
 
             var args = ArgumentScanner.ScanLineArguments(line,
-                    new ExpectedArgument { Name = "name" },
-                    new ExpectedArgument { Name = "strategy", DefaultValue = "xpath" }, //note: may have to swap location with selector
-                    new ExpectedArgument { Name = "selector", AllowNoValue = true }, // No default, but also not mandatory
-                    new ExpectedArgument { Name = "xpath", AllowNoValue = true },
-                    new ExpectedArgument { Name = "id", AllowNoValue = true },
-                    new ExpectedArgument { Name = "css", AllowNoValue = true },
-                    new ExpectedArgument { Name = "friendly name", AllowNoValue = true }
+                    new AstFormalParameter { Name = "name" },
+                    new AstFormalParameter { Name = "strategy", DefaultValue = "xpath" }, //note: may have to swap location with selector
+                    new AstFormalParameter { Name = "selector", AllowNoValue = true }, // No default, but also not mandatory
+                    new AstFormalParameter { Name = "xpath", AllowNoValue = true },
+                    new AstFormalParameter { Name = "id", AllowNoValue = true },
+                    new AstFormalParameter { Name = "css", AllowNoValue = true },
+                    new AstFormalParameter { Name = "friendly name", AllowNoValue = true }
                 );
             if (args.ArgumentErrors?.Any()??false)
             {
@@ -96,10 +97,8 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
 
             Ast.AstControlDeclaration control = new Ast.AstControlDeclaration
             {
-                SourceFile = line.SourceFile,
-                SourceLine = line.SourceLine,
-                SourceLineNumber = line.SourceLineNumber,
-
+                SourceCode = line,
+                
                 Name = nameArgument.ValueString,
                 FriendlyName = friendlyNameArgument.ValueString,
                 Strategy = strategy.Value,

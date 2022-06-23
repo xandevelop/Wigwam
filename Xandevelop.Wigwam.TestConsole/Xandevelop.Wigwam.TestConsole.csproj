@@ -51,10 +51,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Xandevelop.Wigwam.Ast\Xandevelop.Wigwam.Ast.csproj">
-      <Project>{D3C06B05-20FD-4153-ADB1-D5BE1ECFDFDF}</Project>
-      <Name>Xandevelop.Wigwam.Ast</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Xandevelop.Wigwam.Compiler\Xandevelop.Wigwam.Compiler.csproj">
       <Project>{FEB57CE8-3963-4EDC-9919-3D768278CBD7}</Project>
       <Name>Xandevelop.Wigwam.Compiler</Name>

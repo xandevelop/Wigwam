@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Xandevelop.Wigwam.Ast;
+using Xandevelop.Wigwam.Compiler.Extensions;
 
 namespace Xandevelop.Wigwam.Compiler.Scanners
 {
@@ -25,7 +26,7 @@ namespace Xandevelop.Wigwam.Compiler.Scanners
 
         private (string Name, string Value) SplitNameValue(string s)
         {
-            var split2 = Split2(s);
+            var split2 = s.Split2(':', '=');
             if (split2.Part1 == null)
             {
                 // No name was specified
@@ -36,17 +37,17 @@ namespace Xandevelop.Wigwam.Compiler.Scanners
                 return (split2.Part0, split2.Part1);
             }
         }
-        private (string Part0, string Part1) Split2(string s)
-        {
-            var parts = s.SplitWithEscape(new[] { ':', '=' }, 2).ToList();
+        //private (string Part0, string Part1) Split2(string s)
+        //{
+        //    var parts = s.SplitWithEscape(new[] { ':', '=' }, 2).ToList();
 
-            switch (parts.Count)
-            {
-                case 0: return (null, null);
-                case 1: return (parts[0], null);
-                case 2: return (parts[0], parts[1]);
-                default: throw new Exception("Can't happen");
-            }
-        }
+        //    switch (parts.Count)
+        //    {
+        //        case 0: return (null, null);
+        //        case 1: return (parts[0], null);
+        //        case 2: return (parts[0], parts[1]);
+        //        default: throw new Exception("Can't happen");
+        //    }
+        //}
     }
 }

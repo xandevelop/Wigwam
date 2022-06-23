@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Xandevelop.Wigwam.Compiler.Scanners
+namespace Xandevelop.Wigwam.Compiler.Extensions
 {
     // For taking an arg or parameter and splitting into substrings
     // : and = both split the string, \: and \= are literals and don't split the string
@@ -73,5 +73,20 @@ namespace Xandevelop.Wigwam.Compiler.Scanners
             return result;
         }
 
+
+        
+        public static (string Part0, string Part1) Split2(this string s, params char[] splitChars)
+        {
+            var parts = s.SplitWithEscape(splitChars, 2).ToList();
+            switch (parts.Count)
+            {
+                case 0: return (null, null);
+                case 1: return (parts[0], null);
+                case 2: return (parts[0], parts[1]);
+                default: throw new Exception("Can't happen");
+            }
+        }
+
+        
     }
 }

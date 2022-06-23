@@ -1,4 +1,7 @@
-﻿namespace Xandevelop.Wigwam.Compiler
+﻿using System;
+using Xandevelop.Wigwam.Ast;
+
+namespace Xandevelop.Wigwam.Compiler
 {
     public enum ParamType
     {
@@ -32,6 +35,31 @@
             result.TargetParameterType = sig.Item2;
             result.ValueParameterType = sig.Item3;
             return result;
+        }
+
+        internal AstCommandDefinition ToCommandDefinition()
+        {
+            var cmdDef = new AstCommandDefinition
+            {
+                Name = CommandName
+            };
+
+            if(TargetParameterType != ParamType.None)
+            {
+                cmdDef.FormalParameters.Add(new AstFormalParameter { Name = "target" });
+            }
+            if (ValueParameterType != ParamType.None)
+            {
+                cmdDef.FormalParameters.Add(new AstFormalParameter { Name = "value" });
+            }
+
+            cmdDef.SourceCode = new Scanners.Line();
+
+            cmdDef.SourceCode.SourceFile = "(no source file)";
+            cmdDef.SourceCode.SourceLineNumber = 0;
+            cmdDef.SourceCode.SourceLine = CommandName + " (built in command)";
+            
+            return cmdDef;
         }
     }
 }

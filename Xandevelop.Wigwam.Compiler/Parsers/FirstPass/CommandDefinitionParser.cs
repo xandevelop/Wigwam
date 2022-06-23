@@ -19,9 +19,7 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
         {
             AstCommandDefinition astCmd = new AstCommandDefinition
             {
-                SourceFile = line.SourceFile,
-                SourceLine = line.SourceLine,
-                SourceLineNumber = line.SourceLineNumber,
+                SourceCode = line,
 
                 Name = line.Blocks.First(),
                 Description = line.CommentBlock,

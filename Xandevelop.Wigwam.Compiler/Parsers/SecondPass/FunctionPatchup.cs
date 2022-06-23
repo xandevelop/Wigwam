@@ -18,21 +18,38 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
             }
 #warning todo what about functions that haven't been called
         }
+
+        ArgumentScanner argScanner = new ArgumentScanner();
+
         private void ParseStatements(AstBuilder ast, AstFunction currentFunction, List<Ast.IAstStatement> statements, Dictionary<string, string> currentConditions)
         {
-            foreach (var callStatement in statements.Where(x => x is AstFunctionCallNoContext).Cast<AstFunctionCallNoContext>().ToList())
+            foreach (var callStatement in statements.Where(x => x is AstUnresolvedCall).Cast<AstUnresolvedCall>().ToList())
             {
                 // Maybe this is really a command we haven't recognised sooner?  Note: commands MUST NOT have same names as functions.
-                if (ast.Program.CommandDefinitions.Any(x => x.Name == callStatement.FunctionName))
+                var commandDefinition = ast.Program.FindCommandDefinition(callStatement.SourceLineForPatchup.Command);
+                if (commandDefinition != null)
                 {
-                    var cmdDef = ast.Program.CommandDefinitions.First(x => x.Name == callStatement.FunctionName);
-                    callStatement.Command = new AstCommand
+                    var args = argScanner.ScanLineArguments(callStatement.SourceCode, commandDefinition.FormalParameters);
+                    if (args.IsError) { ast.AddArgumentErrors(args.ArgumentErrors); return; }
+                    var arguments = args.ArgumentData;
+                    //callStatement.Command = new AstCommand
+                    //{
+                    //    SourceCode = callStatement.SourceCode,
+                    //    Command = callStatement.SourceCode.Command,
+                    //    Description = callStatement.SourceCode.CommentBlock,
+                    //    Arguments = arguments, //callStatement.ContextFreeArguments,
+                    //    CommandDefinition = commandDefinition
+                    //};
+
+                    ast.Replace(callStatement, new AstCommand
                     {
-                        Command = callStatement.FunctionName,
-                        Description = callStatement.Description,
-                        Arguments = callStatement.ContextFreeArguments,
-                        CommandDefinition = cmdDef
-                    };
+                        SourceCode = callStatement.SourceCode,
+                        Command = callStatement.SourceCode.Command,
+                        Description = callStatement.SourceCode.CommentBlock,
+                        Arguments = arguments, //callStatement.ContextFreeArguments,
+                        CommandDefinition = commandDefinition
+                    });
+
                     continue;
                 }
 
@@ -48,6 +65,7 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
                 else
                 {
                     callStatement.SetFunctionResolved(signature, currentConditions);
+                    ast.Replace(callStatement, callStatement.ToFunctionCall());
 
                     // We read the statement, then we "execute" it virtually
                     ParseStatements(ast, signature, signature.Statements, currentConditions);
@@ -82,7 +100,7 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
             return true;
         }
 
-        private AstFunction FindBestSignature(AstBuilder ast, AstFunctionCallNoContext callStatement, Dictionary<string, string> currentConditions)
+        private AstFunction FindBestSignature(AstBuilder ast, AstUnresolvedCall callStatement, Dictionary<string, string> currentConditions)
         {
             ArgumentScanner s = new ArgumentScanner();
             List<AstFunction> matchedFuncs = new List<AstFunction>();
@@ -90,7 +108,7 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
             ast.CurrentLine = callStatement.SourceLineForPatchup;
 
             // First, the function name must match
-            List<AstFunction> functionsWithRightName = ast.Program.Functions.Where(x => x.Name.Trim().ToLower() == callStatement.FunctionName.Trim().ToLower()).ToList();
+            List<AstFunction> functionsWithRightName = ast.Program.Functions.Where(x => x.Name.Trim().ToLower() == callStatement.SourceLineForPatchup.Command.Trim().ToLower()).ToList();
 
             //List<AstFunctionCallNoContext> allFunctionCalls = new List<AstFunctionCallNoContext>(); // Track all the function calls in the script, for use later when working out pre/post.
 
@@ -139,7 +157,7 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
                     else
                     {
                         // Func has never been called before so record that we have called it here now before we reutnr it
-                        candidateFunction.ConditionsWhenCompiled = AstFunctionCallNoContext.CopyConditionsWhenCalled(currentConditions);
+                        candidateFunction.ConditionsWhenCompiled = AstUnresolvedCall.CopyConditionsWhenCalled(currentConditions);
                     }
 
                     //callStatement.SetFunctionResolved(functionsWithRightName.First(), currentConditions);
@@ -202,7 +220,7 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
                         else
                         {
                             // Func has never been called before so record that we have called it here now before we reutnr it
-                            candidateFunction.ConditionsWhenCompiled = AstFunctionCallNoContext.CopyConditionsWhenCalled(currentConditions);
+                            candidateFunction.ConditionsWhenCompiled = AstUnresolvedCall.CopyConditionsWhenCalled(currentConditions);
                         }
 
                         return candidateFunction;
@@ -250,4 +268,26 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
         }
 
     }
+
+
+    //class FunctionPatchup_Part2
+    //{
+    //    public void Parse(Ast.AstProgram program)
+    //    {
+    //        foreach(var t in program.Tests)
+    //        {
+    //            var unresolvedCalls = t.Statements.Where(x => x is AstUnresolvedCall).Cast<AstUnresolvedCall>();
+    //            foreach(var unresolvedCall in unresolvedCalls)
+    //            {
+    //                //if(unresolvedCall.IsFunc)
+    //            }
+    //        }
+    //        foreach(var f in program.Functions)
+    //        {
+
+    //        }
+
+    //    }
+    //}
+
 }

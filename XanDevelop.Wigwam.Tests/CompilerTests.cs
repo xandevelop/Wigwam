@@ -96,14 +96,14 @@ echo | hello
                                     {
                                         Command = "echo",
                                         Target = "hello",
-                                        SourceFile = "default",
-                                        SourceLine = "echo | hello",
-                                        SourceLineNumber = 3
+                                        //SourceFile = "default",
+                                        //SourceLine = "echo | hello",
+                                        //SourceLineNumber = 3
                                     }
                                 },
-                        SourceFile = "default",
-                        SourceLine = "test | hello world",
-                        SourceLineNumber = 2
+                        //SourceFile = "default",
+                        //SourceLine = "test | hello world",
+                        //SourceLineNumber = 2
                     }
                 }
             };

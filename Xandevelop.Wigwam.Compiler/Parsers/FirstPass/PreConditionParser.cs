@@ -29,9 +29,9 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
             #endregion
 
             var args = ArgumentScanner.ScanLineArguments(line,
-                new ExpectedArgument { Name = "variable" },
-                new ExpectedArgument { Name = "value" },
-                new ExpectedArgument { Name = "comparison", DefaultValue = "equals" }
+                new AstFormalParameter { Name = "variable" },
+                new AstFormalParameter { Name = "value" },
+                new AstFormalParameter { Name = "comparison", DefaultValue = "equals" }
             );
 
             // todo tidy up code like this with better abstractions in error class
@@ -44,9 +44,9 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
                 return;
             }
 
-            ArgumentData variableArgument = args["variable"];
-            ArgumentData valueArgument = args["value"];
-            ArgumentData comparisonArgument = args["comparison"];
+            AstArgument variableArgument = args["variable"];
+            AstArgument valueArgument = args["value"];
+            AstArgument comparisonArgument = args["comparison"];
 
             PreConditionComparisonType comparison = PreConditionComparisonType.Equals;
             #region Map Comparison strings to comparison
@@ -95,9 +95,7 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
 
             Ast.AstPreCondition pre = new Ast.AstPreCondition
             {
-                SourceFile = line.SourceFile,
-                SourceLine = line.SourceLine,
-                SourceLineNumber = line.SourceLineNumber,
+                SourceCode = line, 
                 Variable = variableArgument.ValueString,
                 Value = valueArgument.ValueString,
                 Comparison = comparison,

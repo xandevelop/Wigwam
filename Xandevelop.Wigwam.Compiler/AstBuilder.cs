@@ -19,7 +19,7 @@ namespace Xandevelop.Wigwam.Compiler
         #region Current Method Tracking
 
         public bool HasCurrentMethod => CurrentMethod != null;
-        private IAstMethod CurrentMethod { get; set; }
+        public IAstMethod CurrentMethod { get; set; }
 
         public bool CurrentMethodIsFunction => CurrentMethod is AstFunction;
 
@@ -70,24 +70,37 @@ namespace Xandevelop.Wigwam.Compiler
                 PostConditions = method.PostConditions,
                 Description = method.Description,
                 OverloadGeneratedFrom = method,
-                SourceFile = method.SourceFile,
-                SourceLine = method.SourceLine,
-                SourceLineNumber = method.SourceLineNumber
+                SourceCode = method.SourceCode
             };
 
             // Can't do Statements = method.Statements - we need a value copy, not a reference copy.
             foreach(var s in method.Statements)
             {
-                func.Statements.Add(s.CopyWithNewConditions(conditionsWhenCalled));
+                if (s is AstFunctionCall)
+                {
+                    func.Statements.Add(new AstUnresolvedCall(method, s.SourceCode, conditionsWhenCalled));
+                }
+                else
+                {
+                    // old code
+                    func.Statements.Add(s.CopyWithNewConditions(conditionsWhenCalled));
+                }
             }
 
             
             foreach (var x in conditionsWhenCalled)
             {
-                func.PreConditions.Add(new AstPreCondition { Variable = x.Key, Value = x.Value, Comparison = PreConditionComparisonType.Equals,
-                    SourceFile = method.SourceFile, SourceLine = "(Automatically Generated PreCondition)", SourceLineNumber = method.SourceLineNumber });
+                var newpre = new AstPreCondition
+                {
+                    Variable = x.Key,
+                    Value = x.Value,
+                    Comparison = PreConditionComparisonType.Equals,
+                    SourceCode = method.SourceCode
+                };
+                newpre.SourceCode.SourceLine = "(Automatically Generated PreCondition)";
+                func.PreConditions.Add(newpre);
             }
-            func.ConditionsWhenCompiled = AstFunctionCallNoContext.CopyConditionsWhenCalled(conditionsWhenCalled);
+            func.ConditionsWhenCompiled = AstUnresolvedCall.CopyConditionsWhenCalled(conditionsWhenCalled);
 
             Program.Functions.Add(func);
             AllMethods.Add(func);
@@ -95,9 +108,14 @@ namespace Xandevelop.Wigwam.Compiler
             return func;
         }
 
-        
+        internal void AddCommandDefinitions(List<BuiltInCommandSignature> builtInCommandList)
+        {
+            foreach (var c in builtInCommandList)
+            {
+                AddCommandDefinition(c.ToCommandDefinition());
+            }
+        }
 
-        
         public void AddFunction(AstFunction astFunction)
         {
             CurrentMethod = astFunction;
@@ -115,6 +133,23 @@ namespace Xandevelop.Wigwam.Compiler
         {
             CurrentMethod = null;
             Program.CommandDefinitions.Add(astCmd);
+        }
+
+        public void Replace(AstUnresolvedCall unresolvedCall, AstFunctionCall functionCall)
+        {
+            var method = unresolvedCall.Method;
+
+            int ix = method.Statements.IndexOf(unresolvedCall);
+            method.Statements.RemoveAt(ix);
+            method.Statements.Insert(ix, functionCall);
+        }
+        public void Replace(AstUnresolvedCall unresolvedCall, AstCommand command)
+        {
+            var method = unresolvedCall.Method;
+
+            int ix = method.Statements.IndexOf(unresolvedCall);
+            method.Statements.RemoveAt(ix);
+            method.Statements.Insert(ix, command);
         }
 
         #endregion

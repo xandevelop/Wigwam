@@ -73,6 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AstArgumentPartsTests.cs" />
     <Compile Include="AstJson.cs" />
     <Compile Include="CompilerTests.cs" />
     <Compile Include="MockFileReader.cs" />
@@ -84,10 +85,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Xandevelop.Wigwam.Ast\Xandevelop.Wigwam.Ast.csproj">
-      <Project>{d3c06b05-20fd-4153-adb1-d5be1ecfdfdf}</Project>
-      <Name>Xandevelop.Wigwam.Ast</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Xandevelop.Wigwam.Compiler\Xandevelop.Wigwam.Compiler.csproj">
       <Project>{feb57ce8-3963-4edc-9919-3d768278cbd7}</Project>
       <Name>Xandevelop.Wigwam.Compiler</Name>

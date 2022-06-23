@@ -5,30 +5,31 @@ using Xandevelop.Wigwam.Compiler.Scanners;
 
 namespace Xandevelop.Wigwam.Compiler.Parsers
 {
-    public class TestDeclarationParser : ILineParser
+    public class FunctionDeclarationParser : ILineParser
     {
-        public string Name => "Test Declaration";
+        public string Name => "Function Declaration";
 
         public int OrderNumber => 1;
 
         public bool IsMatch(Line line)
         {
-            return line.Command == "test";
+            return line.Command == "func" || line.Command == "function";
         }
 
         public void Parse(AstBuilder ast, Line line)
         {
-            AstTest astTest = new AstTest
+            AstFunction astFunction = new AstFunction
             {
-                SourceFile = line.SourceFile,
-                SourceLine = line.SourceLine,
-                SourceLineNumber = line.SourceLineNumber,
+                SourceCode = line,
                 
                 Name = line.Blocks.First(),
                 Description = line.CommentBlock,
                 Statements = new List<IAstStatement>()
             };
-            ast.AddTest(astTest);
+
+            astFunction.FormalParameters = new FormalParameterScanner().Scan(line);
+            
+            ast.AddFunction(astFunction);
         }
     }
 }

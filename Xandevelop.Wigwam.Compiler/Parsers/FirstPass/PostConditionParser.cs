@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Xandevelop.Wigwam.Ast;
 using Xandevelop.Wigwam.Compiler.Scanners;
 
 namespace Xandevelop.Wigwam.Compiler.Parsers
@@ -27,8 +28,8 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
             #endregion
 
             var args = ArgumentScanner.ScanLineArguments(line,
-                new ExpectedArgument { Name = "variable" },
-                new ExpectedArgument { Name = "value" }
+                new AstFormalParameter { Name = "variable" },
+                new AstFormalParameter { Name = "value" }
             );
 
             if (args.ArgumentErrors?.Any()??false)
@@ -40,14 +41,12 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
                 return;
             }
 
-            ArgumentData variableArgument = args["variable"];
-            ArgumentData valueArgument = args["value"];
+            AstArgument variableArgument = args["variable"];
+            AstArgument valueArgument = args["value"];
             
             Ast.AstPostCondition post = new Ast.AstPostCondition
             {
-                SourceFile = line.SourceFile,
-                SourceLine = line.SourceLine,
-                SourceLineNumber = line.SourceLineNumber,
+                SourceCode = line,
                 Variable = variableArgument.ValueString,
                 Value = valueArgument.ValueString,
                 Description = line.CommentBlock

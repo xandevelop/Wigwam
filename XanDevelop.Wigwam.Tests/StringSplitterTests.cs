@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using Xandevelop.Wigwam.Compiler.Scanners;
+using Xandevelop.Wigwam.Compiler.Extensions;
 
 namespace XanDevelop.Wigwam.Tests
 {

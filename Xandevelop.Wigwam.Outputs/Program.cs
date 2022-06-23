@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xandevelop.Wigwam.Ast;
 using Xandevelop.Wigwam.Compiler.Parsers;
+using Xandevelop.Wigwam.Outputs.TargetLanguages;
 
 namespace Xandevelop.Wigwam.Outputs
 {
@@ -44,7 +45,9 @@ namespace Xandevelop.Wigwam.Outputs
 
         private static void ToSide(Ast.AstProgram program)
         {
-            throw new NotImplementedException();
+            var side = new SIDE();
+            var result = side.ToSide(program);
+            ;
         }
 
         
@@ -56,12 +59,14 @@ namespace Xandevelop.Wigwam.Outputs
         public static void ToEnglish(this Ast.AstProgram program)
         {
             Compiler.ProgramVisitor programVisitor = new Compiler.ProgramVisitor();
+
             programVisitor.Command += OnCommand;
             programVisitor.EndTest += (object sender, AstTest t) => { Console.WriteLine("*** End of test ***\n"); };
             programVisitor.StartTest += (object sender, AstTest t) => { Console.WriteLine("*** Start test \"" + t.Name + "\" ***"); };
 
             programVisitor.VisitDepthFirst(program);
         }
+
 
         private static void OnCommand(object sender, AstCommand e)
         {

@@ -73,11 +73,14 @@ namespace Xandevelop.Wigwam.Compiler
         public event EventHandler<Ast.AstTest> StartTest;
         public event EventHandler<Ast.AstTest> EndTest;
 
+        public event EventHandler<Ast.AstFunctionCall> StartFunctionCall;
         public event EventHandler<Ast.AstFunction> StartFunction;
         public event EventHandler<Ast.AstFunction> EndFunction;
+        public event EventHandler<Ast.AstFunctionCall> EndFunctionCall;
 
         public event EventHandler<Ast.AstCommand> Command;
-        public event EventHandler<Ast.AstFunctionCall> FunctionCall;
+        
+        
 
         public event EventHandler<Ast.AstControlDeclaration> Control;
         public event EventHandler<Ast.AstCommandDefinition> CommandDefinition;
@@ -107,7 +110,20 @@ namespace Xandevelop.Wigwam.Compiler
         {
             VisitCommand(statement as Ast.AstCommand);
             VisitFunctionCall(statement as Ast.AstFunctionCall, deep);
-            VisitFunctionCall(statement as AstFunctionCallNoContext, deep);
+
+            var unres = statement as AstUnresolvedCall;
+            if(unres != null)
+            {
+                if(unres.IsFunction)
+                {
+                    VisitFunctionCall(unres.ToFunctionCall(), deep);
+                }
+                if(unres.IsCommand)
+                {
+                    VisitCommand(unres.ToCommand());
+                }
+            }
+            
         }
 
         private void VisitCommand(Ast.AstCommand command)
@@ -120,16 +136,20 @@ namespace Xandevelop.Wigwam.Compiler
         private void VisitFunctionCall(Ast.AstFunctionCall call, bool deep)
         {
             if (call == null) return; // Cast check
-            FunctionCall?.Invoke(this, call);
+            StartFunctionCall?.Invoke(this, call);
 
             if (deep)
             {
                 VisitFunction(call.Function, true);
             }
+
+            EndFunctionCall?.Invoke(this, call);
         }
 
-        private void VisitFunctionCall(AstFunctionCallNoContext call, bool deep)
+        [Obsolete("We shouldn't ever do this, really", false)]
+        private void VisitFunctionCall(AstUnresolvedCall call, bool deep)
         {
+            
             if (call == null) return; // Cast check
 
             if (call.Command != null)
@@ -138,20 +158,21 @@ namespace Xandevelop.Wigwam.Compiler
             }
             else
             {
-                FunctionCall?.Invoke(this, new Ast.AstFunctionCall
+                var functionCall = new Ast.AstFunctionCall
                 {
                     Arguments = call.ContextFreeArguments,
                     Function = call.Function,
                     Description = call.Description,
-                    SourceFile = call.SourceFile,
-                    SourceLine = call.SourceLine,
-                    SourceLineNumber = call.SourceLineNumber
-                });
+                    SourceCode = call.SourceCode
+                };
+                StartFunctionCall?.Invoke(this, functionCall);
 
                 if (deep)
                 {
                     VisitFunction(call.Function, true);
                 }
+
+                EndFunctionCall?.Invoke(this, functionCall);
             }
         }
 
