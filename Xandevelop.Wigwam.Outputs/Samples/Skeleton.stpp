@@ -1,0 +1,3 @@
+﻿function | say hello to a user
+	say hello to | username=bob
+	say goodbye

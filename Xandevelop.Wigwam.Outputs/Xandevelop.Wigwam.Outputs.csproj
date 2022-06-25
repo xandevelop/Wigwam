@@ -50,11 +50,13 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TargetLanguages\SIDE.cs" />
+    <Compile Include="TargetLanguages\Skeleton.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="Samples\HelloWorld.tpp" />
+    <None Include="Samples\HelloWorld.stpp" />
+    <None Include="Samples\Skeleton.stpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Xandevelop.Wigwam.Compiler\Xandevelop.Wigwam.Compiler.csproj">

@@ -20,11 +20,14 @@ namespace Xandevelop.Wigwam.Compiler
         {
             Compiler c = new Compiler();
             c.BuiltInCommandList = new List<BuiltInCommandSignature> {
-                ("click", ParamType.Selector),
-                ("type", ParamType.Selector, ParamType.String),
-                ("echo", ParamType.String),
-                ("open", ParamType.Url),
-                ("store", ParamType.String, ParamType.Variable)
+                ("click", ("target", ParamType.Selector)),
+                ("type", ("target", ParamType.Selector), ("value", ParamType.String)),
+                ("echo", ("target", ParamType.String)),
+                ("open", ("url", ParamType.Url)),
+                ("store", ("value", ParamType.String), ("into", ParamType.Variable)),
+                ("pause", ("time", ParamType.Time)),
+                ("wait for element visible", ("element", ParamType.Selector), ("timeout", ParamType.Time))
+
             };
 
             c.LineParsers = new List<ILineParser>();

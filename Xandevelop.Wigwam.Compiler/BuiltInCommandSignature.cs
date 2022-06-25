@@ -9,7 +9,8 @@ namespace Xandevelop.Wigwam.Compiler
         Selector,
         Url,
         String,
-        Variable
+        Variable,
+        Time
     }
 
     public class BuiltInCommandSignature
@@ -36,6 +37,26 @@ namespace Xandevelop.Wigwam.Compiler
             result.ValueParameterType = sig.Item3;
             return result;
         }
+
+        
+        public static implicit operator BuiltInCommandSignature((string CommandName, (string Name, ParamType Type) Param) sig)
+        {
+            return (sig.CommandName, sig.Param, ("value", ParamType.None));
+        }
+
+        public static implicit operator BuiltInCommandSignature((string CommandName, (string Name, ParamType Type) Param1, (string Name, ParamType Type) Param2) sig)
+        {
+            BuiltInCommandSignature result = new BuiltInCommandSignature();
+            result.CommandName = sig.CommandName;
+            result.TargetParameterType = sig.Param1.Type;
+            result.TargetParameterName = sig.Param1.Name;
+            result.ValueParameterType = sig.Param2.Type;
+            result.ValueParameterName = sig.Param2.Name;
+            return result;
+        }
+
+        public string TargetParameterName { get; set; } = "target";
+        public string ValueParameterName { get; set; } = "value";
 
         internal AstCommandDefinition ToCommandDefinition()
         {
