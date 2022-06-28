@@ -1,0 +1,72 @@
+﻿@page "/"
+
+<h3>Fiddle</h3>
+<div>
+<textarea id="in" @oninput="@(ui => { invalue = (string)ui.Value; })" style="width:100%" />
+</div>
+<button class="btn btn-primary" @onclick="Comp">Compile</button>
+<pre>@Result</pre>
+
+@code {
+    string invalue { get; set; }
+
+    string Result { get; set; }
+
+    void Comp()
+    {
+        // string script = @"test | hello world
+        // echo | hello, world";
+        string script = invalue;
+
+        var result = RunSingleFileScript(script);
+
+        Result = "";
+        if (result.compileErrors != null)
+        {    
+            ToEnglish(result.ast);
+        }
+        else
+        {
+            foreach(var e in result.compileErrors)
+            {
+                Result += e + Environment.NewLine;
+            }   
+        }
+
+    }
+
+	private  void ToEnglish(Ast.AstProgram program)
+        {
+            ProgramVisitor programVisitor = new ProgramVisitor();
+
+            programVisitor.Command += OnCommand;
+            programVisitor.EndTest += (object sender, Ast.AstTest t) => { Result += "*** End of test ***" +Environment.NewLine; };
+            programVisitor.StartTest += (object sender, Ast.AstTest t) => { Result +=  "*** Start test \"" + t.Name + "\" ***"+Environment.NewLine; };
+
+            programVisitor.VisitDepthFirst(program);
+        }
+
+
+        private  void OnCommand(object sender, Ast.AstCommand e)
+        {
+            switch(e.Command)
+            {
+                case "echo":
+                     Result += $"  Print \"{e.Target}\" to the console"+Environment.NewLine;
+                    break;
+                default:
+                    Result +=  e.Command + " " + e.Target ?? "" + " " + e.Value ?? "";
+                    break;
+
+            }
+        }
+
+
+    private (AstProgram ast, IEnumerable<CompileMessage> compileErrors) RunSingleFileScript(string script)
+        {
+            var fileReader = new StringFileReader("default", script);
+            var compiler = Compiler.DefaultCompiler();
+            compiler.FileReader = fileReader;
+            return compiler.Compile("default");
+        }
+}
