@@ -1,38 +1,105 @@
-﻿@page "/"
+﻿@page "/{FiddleId}"
+@page "/"
+@inject HttpClient Http
+ 
+<div class="csharp code">
+<textarea id="in" @oninput="@(ui => { invalue = (string)ui.Value; })" style="width:100%" value="@invalue" />
 
-<h3>Fiddle</h3>
-<div>
-<textarea id="in" @oninput="@(ui => { invalue = (string)ui.Value; })" style="width:100%" />
+    
 </div>
+
 <button class="btn btn-primary" @onclick="Comp">Compile</button>
-<pre>@Result</pre>
-
+ 
+<div class="container">
+<ul class="nav nav-tabs">
+    <li class="active nav-item"><button data-toggle="tab" class="nav-link active"  href="#output">Errors</button></li>
+    <li class="nav-item"><button class="nav-link"  data-toggle="tab" href="#english">English</button></li>
+    <li class="nav-item"><button class="nav-link"  data-toggle="tab" href="#side">SIDE</button></li>
+    <li class="nav-item"><button class="nav-link"  data-toggle="tab" href="#csharp">C#</button></li>
+    <li class="nav-item"><button class="nav-link"  data-toggle="tab" href="#debug">Debug</button></li>
+  </ul>
+  @*add disabled to anchor classes when compile errors...*@
+  <div class="tab-content">
+    <div id="output" class="tab-pane fade in active show" aria-selected="true">
+      <pre>@Errors</pre>
+    </div>
+    <div id="english" class="tab-pane fade">
+      <pre>@EnglishResult</pre>
+    </div>
+    <div id="side" class="tab-pane fade">
+      TODO SIDE
+    </div>
+    <div id="csharp" class="tab-pane fade">
+      TODO C#
+    </div>
+    <div id="debug" class="tab-pane fade">
+      @DebugResult
+    </div>
+  </div>
+  </div>
 @code {
-    string invalue { get; set; }
+    [Parameter]public string? FiddleId { get; set; }
 
-    string Result { get; set; }
-
-    void Comp()
+    bool Loaded = false;
+    protected override async Task OnInitializedAsync()
     {
-        // string script = @"test | hello world
-        // echo | hello, world";
-        string script = invalue;
+        if (Loaded) return;
+        if(FiddleId != null)
+        {
+            try
+            {
+                //string loadedScript = await Http.GetStringAsync("sample-data/" + FiddleId + ".stpp");
+                string uri = "https://raw.githubusercontent.com/xandevelop/Wigwam/main/Xandevelop.Wigwam.Outputs/Samples/" + FiddleId + ".stpp";
+                string loadedScript = await Http.GetStringAsync(uri);
+                invalue = loadedScript;
+            }
+            catch
+            {
+                invalue = "";
+            }
+            Comp();
+        }
+        Loaded = true;
+    }
+
+    string invalue { get; set; } 
+
+    string Errors { get; set; }
+    string EnglishResult { get; set; }
+    string DebugResult { get; set; }
+
+
+    void Comp(string script)
+    {
+
 
         var result = RunSingleFileScript(script);
 
-        Result = "";
-        if (result.compileErrors != null)
-        {    
+
+        EnglishResult = "";
+        if (result.compileErrors == null || result.compileErrors.Count() == 0)
+        {
+            // Compiled ok so set result
+            Errors = ""; DebugResult = "";
             ToEnglish(result.ast);
+
         }
         else
         {
-            foreach(var e in result.compileErrors)
-            {
-                Result += e + Environment.NewLine;
-            }   
+            
+
+            Errors = result.compileErrors.Select(x => $"Line {x.SourceLineNumber}: {x.Text}").Aggregate((x,y) => x + Environment.NewLine + y);
+            EnglishResult = "Errors in script - see \"Errors\" for details";
+            DebugResult = Errors;
         }
 
+        
+        
+    }
+
+    void Comp()
+    {
+        Comp(invalue);
     }
 
 	private  void ToEnglish(Ast.AstProgram program)
@@ -40,8 +107,8 @@
             ProgramVisitor programVisitor = new ProgramVisitor();
 
             programVisitor.Command += OnCommand;
-            programVisitor.EndTest += (object sender, Ast.AstTest t) => { Result += "*** End of test ***" +Environment.NewLine; };
-            programVisitor.StartTest += (object sender, Ast.AstTest t) => { Result +=  "*** Start test \"" + t.Name + "\" ***"+Environment.NewLine; };
+            programVisitor.EndTest += (object sender, Ast.AstTest t) => { EnglishResult += "*** End of test ***" +Environment.NewLine; };
+            programVisitor.StartTest += (object sender, Ast.AstTest t) => { EnglishResult +=  "*** Start test \"" + t.Name + "\" ***"+Environment.NewLine; };
 
             programVisitor.VisitDepthFirst(program);
         }
@@ -52,10 +119,10 @@
             switch(e.Command)
             {
                 case "echo":
-                     Result += $"  Print \"{e.Target}\" to the console"+Environment.NewLine;
+                     EnglishResult += $"  Print \"{e.Target}\" to the console"+Environment.NewLine;
                     break;
                 default:
-                    Result +=  e.Command + " " + e.Target ?? "" + " " + e.Value ?? "";
+                    EnglishResult +=  e.Command + " " + e.Target ?? "" + " " + e.Value ?? "";
                     break;
 
             }
