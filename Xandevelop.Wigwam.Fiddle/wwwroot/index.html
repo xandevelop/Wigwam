@@ -14,14 +14,6 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/default.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/languages/csharp.min.js"></script>
-    <script>
-        hljs.highlightAll();
-        //window.highlightSnippet = function () {
-        //    document.querySelectorAll('.code').forEach((el) => {
-        //        hljs.highlightBlock(el);
-        //    });
-        //}
-    </script>
 
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
@@ -52,6 +44,26 @@
         });
     </script>-->
 
+
+    <script>
+        function CStoJSCall(result_element, code_input) {
+            // Invoke to call C# function from JavaScript.
+
+
+
+            result_element.innerHTML = DotNet.invokeMethod('Xandevelop.Wigwam.Fiddle', 'JStoCSCall', code_input.value);
+        }
+    </script>
+
+
+    <link id="import-theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/prism.min.js"></script>
+    <script src="scripts/code-input.js"></script>
+    <link href="css/code-input.css" rel="stylesheet" />
+    <!--<script>codeInput.registerTemplate("syntax-highlighted", codeInput.templates.prism(Prism));</script>-->
+    <!--<script>codeInput.registerTemplate("syntax-highlighted", codeInput.templates.selenese());</script>-->
+    <script>codeInput.registerTemplate("syntax-highlighted", codeInput.templates.cscallback());</script>
+
 </head>
 
 <body>
@@ -63,6 +75,51 @@
         <a class="dismiss">🗙</a>
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
+
+
+
+
+    
+    <!--<script>
+        function update(text) {
+            let result_element = document.querySelector("#highlighting-content");
+            // Handle final newlines (see article)
+            if (text[text.length - 1] == "\n") {
+                text += " ";
+            }
+            // Update code
+            result_element.innerHTML = text.replace(new RegExp("&", "g"), "&amp;").replace(new RegExp("<", "g"), "&lt;"); /* Global RegExp */
+            // Syntax Highlight
+            Prism.highlightElement(result_element);
+        }
+        function sync_scroll(element) {
+            /* Scroll result to scroll coords of event - sync with textarea */
+            let result_element = document.querySelector("#highlighting");
+            // Get and set x and y
+            result_element.scrollTop = element.scrollTop;
+            result_element.scrollLeft = element.scrollLeft;
+        }
+
+        function check_tab(element, event) {
+            let code = element.value;
+            if (event.key == "Tab") {
+                /* Tab key pressed */
+                event.preventDefault(); // stop normal
+                let before_tab = code.slice(0, element.selectionStart); // text before tab
+                let after_tab = code.slice(element.selectionEnd, element.value.length); // text after tab
+                let cursor_pos = element.selectionEnd + 1; // where cursor moves after tab - moving forward by 1 char to after tab
+                element.value = before_tab + "\t" + after_tab; // add tab char
+                // move cursor
+                element.selectionStart = cursor_pos;
+                element.selectionEnd = cursor_pos;
+                update(element.value); // Update text to include indent
+            }
+        }
+
+    </script>-->
+    
+
+
 </body>
 
 </html>

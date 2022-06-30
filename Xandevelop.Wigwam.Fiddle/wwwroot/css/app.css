@@ -62,3 +62,14 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+
+.code-comment {
+    color:green;
+}
+.code-keyword {
+    color:blue;
+}
+.code-normal {
+    color:black;
+}

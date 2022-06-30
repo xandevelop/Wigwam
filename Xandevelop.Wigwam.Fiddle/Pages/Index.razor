@@ -1,9 +1,33 @@
-﻿@page "/ix"
+﻿@page "/ix" 
+@inject IJSRuntime JsRuntime;
 
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
+@*
+<Dummy />*@
 
-Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<label for="select-theme">Theme: </label><select id="select-theme" onchange="document.querySelector('#import-theme').setAttribute('href', this.value);">
+    <option value="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism.css">Default</option>
+    <option value="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism-tomorrow.css">Tomorrow Night (Rosey)</option>
+    <option value="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism-dark.css">Dark</option>
+    <option value="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism-funky.css">Funky</option>
+  </select>
+<code-input lang="HTML" @oninput="@(ui => { Val = (string)ui.Value; })" value="@Val" />
+
+@Val
+
+@code {
+    string Val { get; set; } = "hello <a href='xxx' />";
+
+
+
+    // Return call back from JavaScript to C#
+    [JSInvokable]
+    public static Task<string> JStoCSCall(string code)
+    {
+        Console.WriteLine(code);
+        // do nothing
+        return "<span class='code-comment'>hello</span>";
+    }
+}
