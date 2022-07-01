@@ -81,7 +81,9 @@
         {
             // Compiled ok so set result
             Errors = ""; DebugResult = "";
-            ToEnglish(result.ast);
+
+            EnglishResult = new OutputTargets.English().ToEnglish(result.ast);
+            //ToEnglish(result.ast);
 
         }
         else
@@ -102,31 +104,31 @@
         Comp(invalue);
     }
 
-	private  void ToEnglish(Ast.AstProgram program)
-        {
-            ProgramVisitor programVisitor = new ProgramVisitor();
+	//private  void ToEnglish(Ast.AstProgram program)
+ //       {
+ //           ProgramVisitor programVisitor = new ProgramVisitor();
 
-            programVisitor.Command += OnCommand;
-            programVisitor.EndTest += (object sender, Ast.AstTest t) => { EnglishResult += "*** End of test ***" +Environment.NewLine; };
-            programVisitor.StartTest += (object sender, Ast.AstTest t) => { EnglishResult +=  "*** Start test \"" + t.Name + "\" ***"+Environment.NewLine; };
+ //           programVisitor.Command += OnCommand;
+ //           programVisitor.EndTest += (object sender, Ast.AstTest t) => { EnglishResult += "*** End of test ***" +Environment.NewLine; };
+ //           programVisitor.StartTest += (object sender, Ast.AstTest t) => { EnglishResult +=  "*** Start test \"" + t.Name + "\" ***"+Environment.NewLine; };
 
-            programVisitor.VisitDepthFirst(program);
-        }
+ //           programVisitor.VisitDepthFirst(program);
+ //       }
 
 
-        private  void OnCommand(object sender, Ast.AstCommand e)
-        {
-            switch(e.Command)
-            {
-                case "echo":
-                     EnglishResult += $"  Print \"{e.Target}\" to the console"+Environment.NewLine;
-                    break;
-                default:
-                    EnglishResult +=  e.Command + " " + e.Target ?? "" + " " + e.Value ?? "";
-                    break;
+ //       private  void OnCommand(object sender, Ast.AstCommand e)
+ //       {
+ //           switch(e.Command)
+ //           {
+ //               case "echo":
+ //                    EnglishResult += $"  Print \"{e.Target}\" to the console"+Environment.NewLine;
+ //                   break;
+ //               default:
+ //                   EnglishResult +=  e.Command + " " + e.Target ?? "" + " " + e.Value ?? "";
+ //                   break;
 
-            }
-        }
+ //           }
+ //       }
 
 
     private (AstProgram ast, IEnumerable<CompileMessage> compileErrors) RunSingleFileScript(string script)

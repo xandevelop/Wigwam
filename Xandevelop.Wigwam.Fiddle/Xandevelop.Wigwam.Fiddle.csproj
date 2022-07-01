@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Xandevelop.Wigwam.Compiler\Xandevelop.Wigwam.Compiler.csproj" />
+    <ProjectReference Include="..\Xandevelop.Wigwam.OutputTargets\Xandevelop.Wigwam.OutputTargets.csproj" />
   </ItemGroup>
 
 </Project>
