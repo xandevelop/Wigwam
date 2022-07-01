@@ -62,3 +62,27 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+
+
+
+
+
+    /*  Input code */
+#in {
+    margin: 10px;
+    padding: 10px;
+    border: 0;
+    width: calc(100% - 32px);
+    height: 300px;
+    font-size: 12pt;
+    font-family: monospace;
+    line-height: 20pt;
+    tab-size: 2;
+    overflow: auto;
+    white-space: nowrap; /* Allows textarea to scroll horizontally */
+
+    resize: none;
+
+    background-color:#eeeeee;
+}
