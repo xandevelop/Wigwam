@@ -17,6 +17,9 @@
 
 @Val
 
+
+
+
 @code {
     string Val { get; set; } = "hello <a href='xxx' />";
 
@@ -24,7 +27,7 @@
 
     // Return call back from JavaScript to C#
     [JSInvokable]
-    public static Task<string> JStoCSCall(string code)
+    public static string JStoCSCall(string code)
     {
         Console.WriteLine(code);
         // do nothing

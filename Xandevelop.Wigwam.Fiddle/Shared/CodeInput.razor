@@ -1,0 +1,82 @@
+﻿@using System.Text
+
+<div style="height: 200px;">
+	@*oninput="update(this.value); sync_scroll(this);"*@
+
+<textarea placeholder="Enter Source Code" id="editing"
+	spellcheck="false" 	 
+	onscroll="sync_scroll(this);" 
+	onkeydown="check_tab(this, event);"
+	value="@Code"
+	@oninput="@(x => OnInput(x))"	
+>
+</textarea>
+
+<pre id="highlighting-content" aria-hidden="true">
+<code class="language-html" id="highlighting">
+
+	@FormattedCode
+</code>
+</pre>
+</div>
+
+
+
+
+
+@code {
+
+	[Parameter] public EventCallback<string> OnCodeChanged { get; set; }
+	[Parameter] public EventCallback<string> ErrorsInSourceChanged { get; set; }
+
+	[Parameter] public string Code { get; set; } = "";
+
+	private MarkupString? _formattedCode { get; set; }
+	protected MarkupString FormattedCode { get { if (_formattedCode == null) RefreshFormat(); return _formattedCode.Value; } }
+
+	protected void OnInput(ChangeEventArgs x)
+	{
+		Code = (string)x.Value ?? "";
+		RefreshFormat();
+
+		OnCodeChanged.InvokeAsync(Code);
+	}
+
+	private void RefreshFormat()
+	{
+		var compiled = RunSingleFileScript(Code);
+
+		_formattedCode = Format(compiled.compileErrors, Code);
+
+		ErrorsInSourceChanged.InvokeAsync(compiled.compileErrors.Select(x => $"Line {x.SourceLineNumber}: {x.Text}").Aggregate((x, y) => x + Environment.NewLine + y));
+	}
+
+	private MarkupString Format(IEnumerable<CompileMessage> compileErrors, string c)
+	{
+		var lines = c.Split('\n');
+		StringBuilder sb = new StringBuilder();
+		int lineNo = 1;
+		foreach(var line in lines)
+		{
+			if (compileErrors.Any(x => x.SourceLineNumber == lineNo))
+			{
+				sb.AppendLine("<span class='ci-error ci-code'>" + line + "</span>");
+			}
+			else
+			{
+				sb.AppendLine("<span class='ci-code'>" + line + "</span>");
+			}
+			lineNo++;
+		}
+		return (MarkupString)sb.ToString();
+	}
+
+	private (AstProgram ast, IEnumerable<CompileMessage> compileErrors) RunSingleFileScript(string script)
+    {
+        var fileReader = new StringFileReader("default", script);
+        var compiler = Compiler.DefaultCompiler();
+        compiler.FileReader = fileReader;
+        return compiler.Compile("default");
+    }
+
+}

@@ -1,0 +1,22 @@
+﻿@page "/code"
+
+
+<CodeInput Code="@Val" OnCodeChanged="(x) => HandleCodeChanged(x)" ErrorsInSourceChanged="(x) => HandleErrorsInSourceChanged(x)" />
+
+<h3>Value</h3>
+<p>@Val</p>
+
+<p>@ErrorOutput</p>
+
+@code {
+	public string Val { get; set; } = "hello | world";
+	public string ErrorOutput { get; set; } = "";
+	public void HandleCodeChanged(string x)
+	{
+		Val = x;
+	}
+	public void HandleErrorsInSourceChanged(string x)
+	{
+		ErrorOutput = x;
+	}
+}

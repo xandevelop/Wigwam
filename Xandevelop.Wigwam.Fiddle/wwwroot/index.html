@@ -49,7 +49,9 @@
         function CStoJSCall(result_element, code_input) {
             // Invoke to call C# function from JavaScript.
 
-
+            //window.sayHello2 = (dotNetHelper, name) => {
+            //    return dotNetHelper.invokeMethodAsync('GetHelloMessage', name);
+            //};
 
             result_element.innerHTML = DotNet.invokeMethod('Xandevelop.Wigwam.Fiddle', 'JStoCSCall', code_input.value);
         }
@@ -63,6 +65,11 @@
     <!--<script>codeInput.registerTemplate("syntax-highlighted", codeInput.templates.prism(Prism));</script>-->
     <!--<script>codeInput.registerTemplate("syntax-highlighted", codeInput.templates.selenese());</script>-->
     <script>codeInput.registerTemplate("syntax-highlighted", codeInput.templates.cscallback());</script>
+
+
+    <script src="scripts/ci.js"></script>
+    <link id="codecolour" href="css/Code-Light.css" rel="stylesheet" />
+
 
 </head>
 

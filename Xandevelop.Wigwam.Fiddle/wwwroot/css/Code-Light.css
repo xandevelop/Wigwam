@@ -1,0 +1,19 @@
+﻿/* Light color scheme for code */
+
+.ci-error {
+    text-decoration-color: red !important;
+    text-decoration-line: underline !important;
+    text-decoration-style: wavy !important;
+}
+
+.ci-warning {
+    text-decoration-color: blue !important;
+    text-decoration-line: underline !important;
+    text-decoration-style: wavy !important;
+}
+
+.ci-comment {
+    color: green !important;
+    background-color: pink !important;
+}
+
