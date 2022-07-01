@@ -44,17 +44,18 @@
 
 	private void RefreshFormat()
 	{
-		try {
-		var compiled = RunSingleFileScript(Code);
-
-		_formattedCode = Format(compiled.compileErrors, Code);
-		if (compiled.compileErrors.Any())
+		try
 		{
-			ErrorsInSourceChanged.InvokeAsync(compiled.compileErrors.Select(x => $"Line {x.SourceLineNumber}: {x.Text}").Aggregate((x, y) => x + Environment.NewLine + y));
+			var compiled = RunSingleFileScript(Code);
+
+			_formattedCode = Format(compiled.compileErrors, Code);
+			if (compiled.compileErrors.Any())
+			{
+				ErrorsInSourceChanged.InvokeAsync(compiled.compileErrors.Select(x => $"Line {x.SourceLineNumber}: {x.Text}").Aggregate((x, y) => x + Environment.NewLine + y));
+			}
+			else { ErrorsInSourceChanged.InvokeAsync(""); }
 		}
-		else { ErrorsInSourceChanged.InvokeAsync(""); }
-		}
-		catch {}
+		catch { }
 	}
 
 	private MarkupString Format(IEnumerable<CompileMessage> compileErrors, string c)
