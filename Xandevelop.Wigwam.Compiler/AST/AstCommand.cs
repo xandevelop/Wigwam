@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Xandevelop.Wigwam.Ast
@@ -8,6 +9,12 @@ namespace Xandevelop.Wigwam.Ast
         public string Command { get; set; }
         public string Target => Arguments.FirstOrDefault(x => x.Name.ToLower().Trim() == "target")?.Value;
         public string Value => Arguments.FirstOrDefault(x => x.Name.ToLower().Trim() == "value")?.Value;
+
+        public string ToDebugString()
+        {
+            return $"Command: Command={Command} | Target={Target} | Value={Value}";
+        }
+
         public string Description { get; set; }
 
         public List<AstArgument> Arguments { get; set; } = new List<AstArgument>();

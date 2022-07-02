@@ -2,11 +2,15 @@
 @page "/"
 @inject HttpClient Http
  
-<div class="csharp code">
+<PageTitle>WigWam Fiddle</PageTitle>
+
+<CodeInput Code="@invalue" FormattedCode="@FormattedCode" OnCodeChanged="(x)=>HandleCodeChanged(x)" />
+
+@*<div class="csharp code">
 <textarea id="in" @oninput="@(ui => { invalue = (string)ui.Value; })" style="width:100%" value="@invalue" spellcheck="false" placeholder="Enter some code" />
 
     
-</div>
+</div>*@
 
 <button class="btn btn-primary" @onclick="Comp">Compile</button>
  
@@ -33,7 +37,7 @@
       TODO C#
     </div>
     <div id="debug" class="tab-pane fade">
-      @DebugResult
+      <pre>@DebugResult</pre>
     </div>
   </div>
   </div>
@@ -58,6 +62,7 @@
                 invalue = "";
             }
             Comp();
+            FormatCode(invalue);
         }
         Loaded = true;
     }
@@ -69,9 +74,43 @@
     string DebugResult { get; set; }
 
 
+
+    public MarkupString FormattedCode { get; set; }
+
+    public void HandleCodeChanged(string x)
+    {
+        FormatCode(x);
+        invalue = x;
+    }
+
+    private void FormatCode(string code)
+    {
+        string result = "";
+        var lines = code.Split("\n");
+
+        foreach(var l in lines)
+        {
+            if(l.TrimStart().StartsWith("#"))
+            {
+                result+=($"<span style='color:green'>{l}</span>{Environment.NewLine}");
+            }
+            else
+            {
+                result+=($"<span>{l}</span>{Environment.NewLine}");
+            }
+        }
+
+        FormattedCode = (MarkupString)result;
+    }
+
+
+
     void Comp(string script)
     {
-
+        if(String.IsNullOrEmpty(script))
+        {
+            return;
+        }
 
         var result = RunSingleFileScript(script);
 
@@ -84,7 +123,7 @@
 
             EnglishResult = new OutputTargets.English().ToEnglish(result.ast);
             //ToEnglish(result.ast);
-
+            DebugResult = new OutputTargets.DebugString().ToDebugString(result.ast);
         }
         else
         {

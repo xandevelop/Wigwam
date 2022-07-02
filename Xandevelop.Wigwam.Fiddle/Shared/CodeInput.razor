@@ -57,6 +57,8 @@ element.selectionEnd = cursor_pos;
 
 	private MarkupString GetGutterText()
 	{
+		if(Code == null) return (MarkupString)"1";
+
 		StringBuilder sb = new StringBuilder();
 
 		var lineCount = Code.Split('\n').Count() + 1;
