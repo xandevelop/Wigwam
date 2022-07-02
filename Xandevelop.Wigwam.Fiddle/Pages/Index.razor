@@ -1,9 +1,43 @@
 ﻿@page "/ix"
 
 <PageTitle>Index</PageTitle>
-
+@*
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<SurveyPrompt Title="How is Blazor working for you?" />*@
+
+<CodeInput Code="hello | world" FormattedCode="@FormattedCode" OnCodeChanged="(x)=>HandleCodeChanged(x)" />
+
+@code {
+	protected override void OnInitialized()
+	{
+		FormatCode("hello | world");
+	}
+
+	public MarkupString FormattedCode { get; set; }
+
+	public void HandleCodeChanged(string x)
+	{
+		FormatCode(x);
+	}
+
+	private void FormatCode(string code)
+	{
+		string result = "";
+		var lines = code.Split("\n");
+
+		int colorPointer = 0;
+		string[] colors = new[] { "red", "yellow", "green", "pink" };
+		foreach(var l in lines)
+		{
+
+			result+=($"<span style='color:{colors[colorPointer]}'>{l}</span>{Environment.NewLine}");
+			colorPointer++;
+			if (colorPointer == 4) colorPointer = 0;
+		}
+
+		FormattedCode = (MarkupString)result;
+	}
+}

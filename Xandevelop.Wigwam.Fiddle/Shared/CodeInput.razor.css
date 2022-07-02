@@ -1,0 +1,88 @@
+﻿
+#editing, #highlighting {
+    /* Both elements need the same text and space styling so they are directly on top of each other */
+    margin: 10px;
+    padding: 10px;
+    border: 0;
+    width: calc(100% - 98px);
+    height: 150px;
+    left:64px;
+}
+#gutter {
+    /* Both elements need the same text and space styling so they are directly on top of each other */
+    margin: 10px;
+    padding: 10px;
+    border: 0;
+    width: 64px;
+    height: 150px;
+    left:0px ;
+    text-align:right;
+}
+
+    #editing, #highlighting, #highlighting *, #gutter {
+        /* Also add text styles to highlighing tokens */
+        font-size: 12pt;
+        font-family: monospace;
+        line-height: 18pt;
+        tab-size: 2;
+    }
+
+
+#editing, #highlighting, #gutter {
+    /* In the same place */
+    position: absolute;
+    top: 100px;
+    
+}
+
+
+/* Move the textarea in front of the result */
+
+#editing {
+    z-index: 1;
+}
+
+#highlighting {
+    z-index: 0;
+}
+
+
+/* Make textarea almost completely transparent */
+
+#editing {
+    color: transparent;
+    background: transparent;
+    caret-color: black; /* Or choose your favourite color */
+}
+
+/* Can be scrolled */
+#editing, #highlighting, #gutter {
+    overflow: auto;
+    white-space: nowrap; /* Allows textarea to scroll horizontally */
+}
+
+/* Gutter scroll invisible */
+#gutter {
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+}
+#gutter::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+}
+
+/* No resize on textarea */
+#editing {
+    resize: none;
+}
+
+/* Paragraphs; First Image */
+* {
+    font-family: "Fira Code", monospace;
+}
+
+#highlighting {
+    border-radius: 2px;
+    background-color: #eee;
+    color: #111;
+    white-space: pre;
+}

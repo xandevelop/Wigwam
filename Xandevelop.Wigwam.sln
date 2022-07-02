@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xandevelop.Wigwam.Outputs",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xandevelop.Wigwam.Fiddle", "Xandevelop.Wigwam.Fiddle\Xandevelop.Wigwam.Fiddle.csproj", "{7FA3D669-56CB-456C-AD93-89DAAA7B1472}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xandevelop.Wigwam.OutputTargets", "Xandevelop.Wigwam.OutputTargets\Xandevelop.Wigwam.OutputTargets.csproj", "{96337BC6-D994-4718-8AFF-EF29CDADF72B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xandevelop.Wigwam.OutputTargets", "Xandevelop.Wigwam.OutputTargets\Xandevelop.Wigwam.OutputTargets.csproj", "{96337BC6-D994-4718-8AFF-EF29CDADF72B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
