@@ -188,4 +188,60 @@ namespace Xandevelop.Wigwam.Compiler
             CommandDefinition?.Invoke(this, x);
         }
     }
+
+    public abstract class ProgramVisitorBase
+    {
+        ProgramVisitor Visitor { get; }
+        public ProgramVisitorBase()
+        {
+            Visitor = new ProgramVisitor();
+            Visitor.StartTest += Visitor_StartTest;
+            Visitor.EndTest += Visitor_EndTest;
+            Visitor.StartFunctionCall += Visitor_StartFunctionCall;
+            Visitor.EndFunctionCall += Visitor_EndFunctionCall;
+            Visitor.StartFunction += Visitor_StartFunction;
+            Visitor.EndFunction += Visitor_EndFunction;
+            Visitor.Command += Visitor_Command;
+            Visitor.Control += Visitor_Control;
+            Visitor.CommandDefinition += Visitor_CommandDefinition;
+        }
+
+        protected abstract void Visitor_CommandDefinition(object sender, AstCommandDefinition e);
+
+
+        protected abstract void Visitor_Control(object sender, AstControlDeclaration e);
+
+
+        protected abstract void Visitor_Command(object sender, AstCommand e);
+
+
+        protected abstract void Visitor_EndFunction(object sender, AstFunction e);
+
+
+        protected abstract void Visitor_StartFunction(object sender, AstFunction e);
+
+
+        protected abstract void Visitor_EndFunctionCall(object sender, AstFunctionCall e);
+         
+
+        protected abstract void Visitor_StartFunctionCall(object sender, AstFunctionCall e);
+        
+
+        protected abstract void Visitor_EndTest(object sender, AstTest e);
+
+        protected abstract void Visitor_StartTest(object sender, AstTest e);
+
+        public void VisitDepthFirst(Ast.AstProgram program)
+        {
+            Visitor.VisitDepthFirst(program);
+        }
+
+        public void VisitBreadthFirst(Ast.AstProgram program)
+        {
+            Visitor.VisitBreadthFirst(program);
+        }
+
+
+        
+    }
 }

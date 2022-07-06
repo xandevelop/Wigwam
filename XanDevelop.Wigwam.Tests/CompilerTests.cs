@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using DeepEqual.Syntax;
 using NUnit.Framework;
 using Xandevelop.Wigwam.Ast;
@@ -26,8 +27,8 @@ namespace XanDevelop.Wigwam.Tests
             {
                 Command = command,
                 Description = description,
-                Target = target,
-                Value = value
+                //Target = target,
+                //Value = value
             };
         }
         private IAstStatement Echo(string target, string description = null)
@@ -36,7 +37,7 @@ namespace XanDevelop.Wigwam.Tests
             {
                 Command = "echo",
                 Description = description,
-                Target = target
+                //Target = target
             };
         }
         private IAstStatement Call(AstFunction func_say_hello, List<AstArgument> arguments = null, string description = null)
@@ -95,7 +96,7 @@ echo | hello
                                     new AstCommand
                                     {
                                         Command = "echo",
-                                        Target = "hello",
+                                        //Target = "hello",
                                         //SourceFile = "default",
                                         //SourceLine = "echo | hello",
                                         //SourceLineNumber = 3
@@ -342,5 +343,8 @@ echo | clicked submit on contact page
 
             ExecuteTest(script, expectedProgram, expectedErrors);
         }
+
+        
+
     }
 }
