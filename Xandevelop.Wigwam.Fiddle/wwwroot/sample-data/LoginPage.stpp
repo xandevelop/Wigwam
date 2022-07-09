@@ -1,0 +1,85 @@
+﻿test | I can log on with correct credentials
+	open the login page
+	input username and password | Username = Bob | Password = alligator1
+	click log in button
+	assert that I am on the home screen
+
+test | I can not log on with wrong credentials
+	open the login page
+	input username and password | Username = Joe | Password = password
+	click log in button
+	verify that a wrong username or password box is shown
+	assert that I am on the login page
+
+test | I can not log on with no credentials
+	open the login page
+	click log in button
+	verify that a wrong username or password box is shown
+	assert that I am on the login page
+
+test | I can not log in with correct username but wrong password
+	open the login page
+	input username and password | Username = Bob | Password = password
+	click log in button
+	verify that a wrong username or password box is shown
+	assert that I am on the login page
+
+test | I can not log in with wrong username but correct password
+	open the login page
+	input username and password | Username = Joe | Password = alligator1
+	click log in button
+	verify that a wrong username or password box is shown
+	assert that I am on the login page
+
+test | If I click forgotten password, I am redirected to the password reminder screen
+	open the login page
+	click the forgotten password link
+	assert that I am on the forgotten password page
+
+### Supporting Functions ###
+
+func | open the login page
+	open | ${Page.Login}
+	post | Current Page | Login Page
+
+func | input username and password | Username | Password
+	pre | Current Page | Login Page
+	type | ${Login Page Username} | ${Username}
+	type | ${Login Page Password} | ${Password}
+
+func | click log in button
+	pre | Current Page | Login Page
+	click | ${Login Page Login Button}
+
+func | assert that I am on the home screen
+	assert url | ${Page.Home}
+	post | Current Page | Home Page
+	 
+func | verify that a wrong username or password box is shown
+	assert element visible | ${Login Page Wrong Username or Password Box}
+	assert element text | ${Login Page Wrong Username or Password Box} | Wrong user name or password
+
+func | assert that I am on the login page
+	assert url | ${Page.Login}
+	post | Current Page | Login Page
+
+func | click the forgotten password link
+	pre | Current Page | Login Page
+	click | ${Login Page Forgotten Password}
+
+func | assert that I am on the forgotten password page
+	assert url | ${Page.Forgotten Password}
+	post | Current Page | Login Page
+
+### URLs and control definitions - change these if your login page works the same way as the example code ###
+
+BaseUrl | URL="example.com"
+Url | ${Page.Login} | URL = ${BaseUrl}/Login | Friendly Name = "Login Page"
+Url | ${Page.Home} | URL=${BaseUrl}/
+Url | ${Page.Forgotten Password} | URL=${BaseUrl}/forgottenpassword
+
+control | ${Login Page Forgotten Password}
+control | ${Login Page Username}
+control | ${Login Page Password}
+control | ${Login Page Login Button}
+control | ${Login Page Wrong Username or Password Box}
