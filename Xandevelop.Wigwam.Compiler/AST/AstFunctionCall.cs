@@ -4,7 +4,10 @@ namespace Xandevelop.Wigwam.Ast
 { 
     public class AstFunctionCall : IAstStatement
     {
-
+        public override string ToDebugString()
+        {
+            throw new System.NotImplementedException();
+        }
         public List<AstArgument> Arguments { get; set; }
         public string Description { get; set; }
 

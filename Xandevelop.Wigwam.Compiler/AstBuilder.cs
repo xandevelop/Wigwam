@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xandevelop.Wigwam.Ast;
 using Xandevelop.Wigwam.Compiler.Parsers;
 using Xandevelop.Wigwam.Compiler.Scanners;
@@ -140,6 +141,12 @@ namespace Xandevelop.Wigwam.Compiler
             var method = unresolvedCall.Method;
 
             int ix = method.Statements.IndexOf(unresolvedCall);
+            if(ix == -1)
+            {
+                // Not found
+                var s = method.Statements.FirstOrDefault(x => x.SourceLine == unresolvedCall.SourceLine);
+                ix = method.Statements.IndexOf(s);
+            }
             method.Statements.RemoveAt(ix);
             method.Statements.Insert(ix, functionCall);
         }

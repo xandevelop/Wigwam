@@ -35,6 +35,10 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
     // Note: First pass generates these, second pass removes them and replaces wiht AstFunctionCalls.
     public class AstUnresolvedCall : IAstStatement
     {
+        public override string ToDebugString()
+        {
+            throw new NotImplementedException();
+        }
         public IAstMethod Method { get; set; }
 
         public AstUnresolvedCall(IAstMethod method, Line sourceLineForPatchup)
@@ -93,6 +97,8 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
 
 
         }
+
+#warning todo replace with AstArgumentCollection
         public List<AstArgument> ArgumentsWithContext { get; set; }
 
         //internal void SetFunctionNotResolved(Dictionary<string, string> conditions)

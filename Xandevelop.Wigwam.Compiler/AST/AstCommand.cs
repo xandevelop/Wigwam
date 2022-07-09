@@ -7,28 +7,31 @@ namespace Xandevelop.Wigwam.Ast
     public class AstCommand : IAstStatement
     {
         public string Command { get; set; }
-        public string Target => Arguments.FirstOrDefault(x => x.Name.ToLower().Trim() == "target")?.Value;
-        public string Value => Arguments.FirstOrDefault(x => x.Name.ToLower().Trim() == "value")?.Value;
+        public string Target => TargetArgument?.Value;
+        public string Value => ValueArgument?.Value;
 
-        public string ToDebugString()
+        public override string ToDebugString()
         {
-            return $"Command: Command={Command} | Target={Target} | Value={Value}";
+            return $"Command: Command={Command} | {Arguments.ToDebugString()} | Description={Description}";
         }
 
         public string Description { get; set; }
 
-        public List<AstArgument> Arguments { get; set; } = new List<AstArgument>();
+        public AstArgumentCollection Arguments { get; set; } = new AstArgumentCollection();
         public AstCommandDefinition CommandDefinition { get; set; }
 
         public override IAstStatement CopyWithNewConditions(Dictionary<string, string> conditions)
         {
-            throw new System.Exception("Dont think this should be used?");
+            //throw new System.Exception("Dont think this should be used?");
+#warning seems this IS used but still probably shouldn't be...
             return new AstCommand { Command = this.Command, Arguments = this.Arguments, Description = this.Description,
                 SourceCode = this.SourceCode
             };
         }
 
-        public AstArgument TargetArgument => Arguments.FirstOrDefault(x => x.Name.ToLower().Trim() == "target");
-        public AstArgument ValueArgument => Arguments.FirstOrDefault(x => x.Name.ToLower().Trim() == "value");
+        public AstArgument TargetArgument => Arguments["target"];
+        public AstArgument ValueArgument => Arguments["value"];
     }
+
+    
 }

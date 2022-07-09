@@ -12,7 +12,7 @@ namespace XanDevelop.Wigwam.Tests
 {
     public class IntegrationTests
     {
-        [Test, TestCaseSource(nameof(TestCases))]
+        [TestCaseSource(nameof(TestCases))]
         public void GeneralTest(TestCase testCase)
         {
             
@@ -31,8 +31,10 @@ namespace XanDevelop.Wigwam.Tests
             var programVisitor = new TestVisitor(actual);
 
             programVisitor.VisitBreadthFirst(output.ast);
+            string actString = actual.ToString().TrimEnd('\r', '\n');
+            string expString = testCase.Expect.TrimEnd('\r', '\n');
 
-            Assert.AreEqual(actual.ToString().TrimEnd('\r', '\n'), testCase.Expect.TrimEnd('\r', '\n'));
+            Assert.AreEqual(expString, actString);
         }
 
          
@@ -57,6 +59,7 @@ namespace XanDevelop.Wigwam.Tests
 
             if (result.Count == 0) throw new Exception();
 
+            //result.Add(new TestCaseData (new TestCase { FileName = "Default", Expect = "" }));
             return result;
         }
 
@@ -78,7 +81,7 @@ namespace XanDevelop.Wigwam.Tests
 
             protected override void Visitor_Command(object sender, AstCommand e)
             {
-                Result.AppendLine($"Command | command={e.Command} | target={e.Target} | value={e.Value}");
+                Result.AppendLine($"    Command | command={e.Command} | target={e.Target} | value={e.Value}");
             }
 
             protected override void Visitor_CommandDefinition(object sender, AstCommandDefinition e)
@@ -100,27 +103,31 @@ namespace XanDevelop.Wigwam.Tests
 
             protected override void Visitor_EndFunction(object sender, AstFunction e)
             {
-                throw new NotImplementedException();
+                Result.AppendLine($"End Function {e.Name}\r\n");
             }
 
             protected override void Visitor_EndFunctionCall(object sender, AstFunctionCall e)
             {
-                throw new NotImplementedException();
+                Result.AppendLine($"    End Func Call {e.Function.Name}");
             }
 
             protected override void Visitor_EndTest(object sender, AstTest e)
             {
-                Result.AppendLine($"End Test {e.Name}");
+                Result.AppendLine($"End Test {e.Name}\r\n");
             }
 
             protected override void Visitor_StartFunction(object sender, AstFunction e)
             {
-                throw new NotImplementedException();
+                Result.AppendLine($"Start Function {e.Name}");
+                foreach(var p in e.PreConditions)
+                {
+                    Result.AppendLine($"PRE: {p.Variable} {p.Comparison} {p.Value}");
+                }
             }
 
             protected override void Visitor_StartFunctionCall(object sender, AstFunctionCall e)
             {
-                throw new NotImplementedException();
+                Result.AppendLine($"    Start Func Call {e.Function.Name}");
             }
 
             protected override void Visitor_StartTest(object sender, AstTest e)

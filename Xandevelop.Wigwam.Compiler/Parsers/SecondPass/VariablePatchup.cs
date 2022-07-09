@@ -30,7 +30,7 @@ namespace Xandevelop.Wigwam.Compiler.Parsers.SecondPass
                 e.Arguments.Add(new Ast.AstArgument { Name = "target", Value = e.Target });
                 e.Arguments.Add(new Ast.AstArgument { Name = "value", Value = e.Value });
             }
-            foreach(var commandArg in e.Arguments)
+            foreach(var commandArg in e.Arguments.Collection)
             {
                 foreach(var p in commandArg.Parts)
                 {

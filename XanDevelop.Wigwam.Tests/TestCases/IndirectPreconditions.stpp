@@ -1,0 +1,27 @@
+﻿test | i can log in
+open login page
+submit form
+
+test | i can email admin
+open contact page
+submit form
+
+func | open login page
+echo | login page opened
+post | page | login
+
+func | open contact page
+echo | contact page opened
+post | page | contact
+
+func | submit form
+echo | submitting form
+click submit
+
+func | click submit
+pre | page | login
+echo | clicked submit on login page
+
+func | click submit
+pre | page | contact
+echo | clicked submit on contact page

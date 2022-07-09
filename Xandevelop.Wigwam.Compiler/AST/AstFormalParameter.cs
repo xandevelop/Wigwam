@@ -6,6 +6,10 @@ namespace Xandevelop.Wigwam.Ast
     [DebuggerDisplay("Formal Parameter | {Name} | {DataType} | {DefaultValue}")]
     public class AstFormalParameter : AstBase
     {
+        public override string ToDebugString()
+        {
+            throw new NotImplementedException();
+        }
         public string Name { get; set; }
         public string DataType { get; set; }
         public string DefaultValue { get; set; }

@@ -11,5 +11,7 @@ namespace Xandevelop.Wigwam.Ast
         public string SourceFile => SourceCode.SourceFile;
         public string SourceLine => SourceCode.SourceLine;
         public int SourceLineNumber => SourceCode.SourceLineNumber;
+
+        public abstract string ToDebugString();
     }
 }

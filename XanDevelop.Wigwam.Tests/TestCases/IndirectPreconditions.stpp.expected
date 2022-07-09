@@ -1,0 +1,44 @@
+﻿Start Test i can log in
+    Start Func Call open login page
+    End Func Call open login page
+    Start Func Call submit form
+    End Func Call submit form
+End Test i can log in
+
+Start Test i can email admin
+    Start Func Call open contact page
+    End Func Call open contact page
+    Start Func Call submit form
+    End Func Call submit form
+End Test i can email admin
+
+Start Function open login page
+    Command | command=echo | target=login page opened | value=
+End Function open login page
+
+Start Function open contact page
+    Command | command=echo | target=contact page opened | value=
+End Function open contact page
+
+Start Function submit form
+    Command | command=echo | target=submitting form | value=
+    Start Func Call click submit
+    End Func Call click submit
+End Function submit form
+
+Start Function click submit
+PRE: page Equals login
+    Command | command=echo | target=clicked submit on login page | value=
+End Function click submit
+
+Start Function click submit
+PRE: page Equals contact
+    Command | command=echo | target=clicked submit on contact page | value=
+End Function click submit
+
+Start Function submit form
+PRE: page Equals contact
+    Command | command=echo | target=submitting form | value=
+    Start Func Call click submit
+    End Func Call click submit
+End Function submit form

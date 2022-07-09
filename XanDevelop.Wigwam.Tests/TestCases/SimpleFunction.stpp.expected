@@ -1,0 +1,8 @@
+﻿Start Test as a user I can say hello
+    Start Func Call say hello
+    End Func Call say hello
+End Test as a user I can say hello
+
+Start Function say hello
+    Command | command=echo | target=hello | value=
+End Function say hello

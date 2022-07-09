@@ -4,6 +4,10 @@ namespace Xandevelop.Wigwam.Ast
 { 
     public class AstFunction : AstBase, IAstMethod
     {
+        public override string ToDebugString()
+        {
+            throw new System.NotImplementedException();
+        }
         public string Name { get; set; }
         public List<AstFormalParameter> FormalParameters { get; set; } = new List<AstFormalParameter>();
         public List<AstPreCondition> PreConditions { get; set; } = new List<AstPreCondition>();

@@ -8,7 +8,11 @@ namespace Xandevelop.Wigwam.Ast
     [DebuggerDisplay("Argument | {Name} | {Value}")]
     public class AstArgument : AstBase
     {
-        
+        public override string ToDebugString()
+        {
+            throw new NotImplementedException();
+        }
+
         public string Name { get; set; }
 
         private string _value;

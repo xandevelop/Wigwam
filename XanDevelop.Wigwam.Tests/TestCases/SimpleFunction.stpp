@@ -1,0 +1,5 @@
+﻿test | as a user I can say hello
+say hello
+
+func | say hello
+echo | hello
