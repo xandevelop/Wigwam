@@ -1,0 +1,64 @@
+﻿# Absolute URLs can be defined with and without arg names
+Url | Example1 | www.1.com
+Url | Name=Example2 | www.2.com
+Url | Example3 | url=www.3.com
+Url | Name=Example4 | url=www.4.com
+Url | Example5 | example5.com # Descriptions also work
+
+# Base URL can be defined
+BaseUrl | www.example.com
+
+# Urls can be defined relative to base
+Url | Rel1 | {BaseUrl}/1
+Url | Name=Rel2 | {BaseUrl}/2
+Url | Rel3 | url={BaseUrl}/3
+Url | Name=Rel4 | url={BaseUrl}/4
+
+# Base URL shouldn't be defined a second time with same value - warning
+BaseUrl | www.example.com
+
+# Base URL shouldn't be defined differently - error
+BaseUrl | www.github.com
+
+# Querystrings are ok with and without arg name because the ? will escape the = afterwards
+Url | Qs1 | www.example.com?a=b
+Url | Qs2 | url=www.example.com?c=d
+Url | Qs3 | www.example.com?a=b&c=d
+Url | Qs3 | www.example.com?a=%20b
+
+
+# Protocols can be included (note port numbers are tricky and require the arg name)
+Url | P1 | http://www.example.com
+Url | P2 | https://www.example.com
+Url | P3 | localhost:1234/index.htm
+Url | P4 | url=localhost:1234/index.htm
+
+# Same URL can be defined twice if it has the same value
+Url | S1 | www.example.com
+Url | S1 | www.example.com
+
+# Same URL cannot be defined twice with different values
+Url | S2 | www.google.com
+Url | S2 | www.bing.com
+
+# Tests and functions can reference defined urls as variables
+test | As a QA, I can define and use URLs in my test scripts
+	open | {Example1}
+	open | {Example2}
+	open | {Example3}
+	open | {Example4}
+	open | {Example5}
+	open | {BaseUrl}
+	open | {Rel1}
+	open | {Rel2}
+	open | {Rel3}
+	open | {Rel4}
+	open | {Qs1}
+	open | {Qs2}
+	open | {Qs3}
+	open | {P1}
+	open | {P2}
+	open | {P3}
+	open | {P4}
+	open | {S1}
+	open | {S2}
