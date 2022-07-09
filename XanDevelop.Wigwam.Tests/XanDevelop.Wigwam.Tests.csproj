@@ -28,15 +28,18 @@
     </None>
     <None Update="TestCases\IndirectPreconditions.stpp.expected">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DependentUpon>IndirectPreconditions.stpp</DependentUpon>
     </None>
     <None Update="TestCases\SimpleFunction.stpp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="TestCases\SimpleFunction.stpp.expected">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DependentUpon>SimpleFunction.stpp</DependentUpon>
     </None>
     <None Update="TestCases\tes.stpp.expected">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DependentUpon>tes.stpp</DependentUpon>
     </None>
     <None Update="TestCases\tes.stpp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -46,6 +49,7 @@
     </None>
     <None Update="TestCases\HelloWorld.stpp.expected">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DependentUpon>HelloWorld.stpp</DependentUpon>
     </None>
   </ItemGroup>
 </Project>
