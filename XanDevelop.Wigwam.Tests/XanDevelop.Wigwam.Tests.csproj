@@ -23,6 +23,20 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <None Update="TestCases\CommandDefinition\CommandDefinition.stpp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestCases\CommandDefinition\CommandDefinition.stpp.expected">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DependentUpon>CommandDefinition.stpp</DependentUpon>
+    </None>
+    <None Update="TestCases\ControlDefinition.stpp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestCases\ControlDefinition.stpp.expected">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DependentUpon>ControlDefinition.stpp</DependentUpon>
+    </None>
     <None Update="TestCases\IndirectPreconditions.stpp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -50,6 +64,13 @@
     <None Update="TestCases\HelloWorld.stpp.expected">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DependentUpon>HelloWorld.stpp</DependentUpon>
+    </None>
+    <None Update="TestCases\Urls.stpp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestCases\Urls.stpp.expected">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <DependentUpon>Urls.stpp</DependentUpon>
     </None>
   </ItemGroup>
 </Project>

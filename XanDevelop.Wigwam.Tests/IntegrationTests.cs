@@ -42,7 +42,7 @@ namespace XanDevelop.Wigwam.Tests
         public static IEnumerable TestCases()
         {
             var result = new List<TestCaseData>();
-            var files = System.IO.Directory.GetFiles(System.IO.Directory.GetCurrentDirectory() + @"/TestCases");
+            var files = System.IO.Directory.GetFiles(System.IO.Directory.GetCurrentDirectory() + @"/TestCases", "*", System.IO.SearchOption.AllDirectories);
 
             foreach (var f in files.Where(x => !x.Contains(".expected")))
             {

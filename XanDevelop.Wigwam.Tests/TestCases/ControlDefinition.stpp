@@ -1,0 +1,9 @@
+﻿control | name = Login Button 1 | Id=btnLogin | FriendlyName = Login Btn # Login Button specified by ID
+control | name = Login Button 2 | css=#btnLogin | FriendlyName = Login Btn # Login button specified by CSS
+control | name = Login Button 3 | xpath=//@id=btnLogin | FriendlyName = Login Btn # Login button specified by XPath
+
+control | name = Login Button 4 | strategy=id | selector=btnLogin | FriendlyName = Login Btn # Login button with strategy and selector specified explicitly
+
+control | name = Login Button 5 | id=btnLogin${x} | FriendlyName = Login Btn # Login button with 1 indexer
+control | name = Login Button 6 | id=btnLogin${x}${y} | FriendlyName = Login Btn # Login button with 2 indexers
+
