@@ -1,0 +1,18 @@
+﻿Comment - # to end of line
+
+Formal Parameter 
+Argument
+Description - at end of line, # to end of line.
+
+Command Definition - create a new command.     Name { Formal Parameter } [ Description ]
+Command - do something, e.g. click or echo.    Name { Argument } [ Description ]
+Control Declaration - define a control.        Name ( (Strategy Selector) | XPath | Css | Id) FriendlyName [ description ]
+Function Declaration - Start a func            Name { Formal Parameter } [ Description ]
+Instruction - command | function call
+Function Call - invoke a function              Name { Argument }
+Post Condition                                 Post Name Value
+Pre Condition                                  Pre Name Expected Value Comparison Method
+Test Declaration                               Test Name [ Description ]
+Url Declaration 
+
+Variable Decl

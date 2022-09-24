@@ -65,6 +65,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DependentUpon>HelloWorld.stpp</DependentUpon>
     </None>
+    <None Update="TestCases\tests.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="TestCases\Urls.stpp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using Xandevelop.Wigwam.Ast;
 using Xandevelop.Wigwam.Compiler;
@@ -12,7 +13,7 @@ namespace XanDevelop.Wigwam.Tests
 {
     public class IntegrationTests
     {
-        [TestCaseSource(nameof(TestCases))]
+        //[TestCaseSource(nameof(TestCases))]
         public void GeneralTest(TestCase testCase)
         {
             
@@ -63,7 +64,75 @@ namespace XanDevelop.Wigwam.Tests
             return result;
         }
 
-        
+
+
+        [TestCaseSource(nameof(JsonTestCases))]
+        public void JsonTest(JsonTestCase testCase)
+        {
+
+            var fileReader = new MockFileReader("a", testCase.Input);
+            var compiler = Compiler.DefaultCompiler();
+            compiler.FileReader = fileReader;
+            var output = compiler.Compile("a");
+
+            StringBuilder actual = new StringBuilder();
+            foreach (var err in output.compileErrors)
+            {
+                string file = new System.IO.FileInfo(err.SourceFile).Name;
+                actual.AppendLine($"Error {err.SourceLineNumber} {err.SourceLine} {file} {err.MessageType} {err.Text}");
+            }
+
+            var programVisitor = new TestVisitor(actual);
+
+            programVisitor.VisitBreadthFirst(output.ast);
+            string actString = actual.ToString().TrimEnd('\r', '\n');
+            string expString = testCase.Expect.TrimEnd('\r', '\n');
+
+            Assert.AreEqual(expString, actString);
+        }
+
+        public static IEnumerable JsonTestCases()
+        {
+            var result = new List<TestCaseData>();
+            string curdir = System.IO.Directory.GetCurrentDirectory();
+            var file = curdir + @"\TestCases\tests.json";
+            
+            string content = System.IO.File.ReadAllText(file);
+            JsonTestCaseCollection caseList = JsonTestCaseCollection.FromJson(content);
+
+            foreach (var f in caseList.Tests)
+            {
+                var tcd = new TestCaseData(f).SetName("Test: " + f.Name);
+                result.Add(tcd);
+            }
+
+            if (result.Count == 0) throw new Exception();
+
+            //result.Add(new TestCaseData (new TestCase { FileName = "Default", Expect = "" }));
+            return result;
+        }
+
+        public class JsonTestCaseCollection
+        {
+            [JsonProperty("tests")]
+            public List<JsonTestCase> Tests { get; set; }
+            public static JsonTestCaseCollection FromJson(string json) => JsonConvert.DeserializeObject<JsonTestCaseCollection>(json);
+        }
+
+        [DebuggerDisplay("{Name}")]
+        public class JsonTestCase
+        {
+
+            [JsonProperty("name")]
+            public string Name { get; set; }
+
+            [JsonProperty("input")]
+            public string Input { get; set; }
+
+            [JsonProperty("expect")]
+            public string Expect { get; set; }
+        }
+
         public class TestCase
         {
             public string FileName { get; set; }

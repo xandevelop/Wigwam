@@ -1,0 +1,59 @@
+﻿{
+	"tests": [
+		{
+			"name": "Command Definition Test",
+			"input": "command | name=MyCustomCommand | arg0 name = a0 | arg1 name = a1 | arg2 name = a3",
+			"expect": "define command MyCustomCommand"
+		},
+		{
+			"name": "hello world",
+			"input": "test | say hello\necho | hello, world\n# Comments should be ignored",
+			"expect": "Start Test say hello\r\n    Command | command=echo | target=hello, world | value=\r\nEnd Test say hello"
+		},
+		{
+			"name": "",
+			"input": "",
+			"expect": ""
+		},
+		{
+			"name": "Login Button specified by ID",
+			"input": "control | name = Login Button 1 | Id=btnLogin | FriendlyName = Login Btn",
+			"expect": ""
+		},
+		{
+			"name": "# Login button specified by CSS",
+			"input": "control | name = Login Button 2 | css=#btnLogin | FriendlyName = Login Btn",
+			"expect": ""
+		},
+		{
+			"name": "Login button specified by XPath",
+			"input": "control | name = Login Button 3 | xpath=//@id=btnLogin | FriendlyName = Login Btn",
+			"expect": ""
+		},
+		{
+			"name": "Login button with strategy and selector specified explicitly",
+			"input": "control | name = Login Button 4 | strategy=id | selector=btnLogin | FriendlyName = Login Btn",
+			"expect": ""
+		},
+		{
+			"name": "Login button with 1 indexer",
+			"input": "control | name = Login Button 5 | id=btnLogin${x} | FriendlyName = Login Btn",
+			"expect": ""
+		},
+		{
+			"name": "Login button with 2 indexers",
+			"input": "control | name = Login Button 6 | id=btnLogin${x}${y} | FriendlyName = Login Btn",
+			"expect": ""
+		}
+	]
+}
+
+
+
+
+
+
+
+
+
+
