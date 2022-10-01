@@ -11,7 +11,7 @@ using Xandevelop.Wigwam.Compiler;
 
 namespace XanDevelop.Wigwam.Tests
 {
-    public class IntegrationTests
+    public class IntegrationTestsFromFile
     {
         //[TestCaseSource(nameof(TestCases))]
         public void GeneralTest(TestCase testCase)
@@ -72,6 +72,7 @@ namespace XanDevelop.Wigwam.Tests
 
             var fileReader = new MockFileReader("a", testCase.Input);
             var compiler = Compiler.DefaultCompiler();
+            compiler.BreakOnError = true;
             compiler.FileReader = fileReader;
             var output = compiler.Compile("a");
 
@@ -161,13 +162,13 @@ namespace XanDevelop.Wigwam.Tests
                 }
                 else
                 {
-                    Result.AppendLine($"Command Definition {e.Name}");
+                    Result.AppendLine($"Command Definition | name={e.Name}");
                 }
             }
 
             protected override void Visitor_Control(object sender, AstControlDeclaration e)
             {
-                throw new NotImplementedException();
+                Result.AppendLine($"Define control | name={e.Name} | strategy={e.Strategy} | selector={e.Selector} | friendlyName={e.FriendlyName}");
             }
 
             protected override void Visitor_EndFunction(object sender, AstFunction e)

@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Xandevelop.Wigwam.Ast;
+using Xandevelop.Wigwam.Compiler.Extensions;
 using Xandevelop.Wigwam.Compiler.Scanners;
 
 namespace Xandevelop.Wigwam.Compiler.Parsers
@@ -17,11 +19,14 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
 
         public void Parse(AstBuilder ast, Line line)
         {
+            var args = Scanner.ScanLineArguments(line, new System.Collections.Generic.List<AstFormalParameter> {
+                    new AstFormalParameter { Name = "name" }});
+
             AstCommandDefinition astCmd = new AstCommandDefinition
             {
                 SourceCode = line,
 
-                Name = line.Blocks.First(),
+                Name = args["name"].Value,
                 Description = line.CommentBlock,
             };
 
@@ -29,5 +34,10 @@ namespace Xandevelop.Wigwam.Compiler.Parsers
 
             ast.AddCommandDefinition(astCmd);
         }
+        ArgumentScanner Scanner { get; } = new ArgumentScanner {  AllowExtraArguments = true };
+
+
+
+
     }
 }

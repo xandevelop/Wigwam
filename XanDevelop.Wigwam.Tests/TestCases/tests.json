@@ -3,7 +3,7 @@
 		{
 			"name": "Command Definition Test",
 			"input": "command | name=MyCustomCommand | arg0 name = a0 | arg1 name = a1 | arg2 name = a3",
-			"expect": "define command MyCustomCommand"
+			"expect": "Command Definition | name=MyCustomCommand"
 		},
 		{
 			"name": "hello world",
@@ -18,31 +18,36 @@
 		{
 			"name": "Login Button specified by ID",
 			"input": "control | name = Login Button 1 | Id=btnLogin | FriendlyName = Login Btn",
-			"expect": ""
+			"expect": "Define control | name=Login Button 1 | strategy=id | selector=btnLogin | friendlyName=Login Btn"
 		},
 		{
 			"name": "# Login button specified by CSS",
 			"input": "control | name = Login Button 2 | css=#btnLogin | FriendlyName = Login Btn",
-			"expect": ""
+			"expect": "Define control | name=Login Button 2 | strategy=css | selector=#btnLogin | friendlyName=Login Btn"
 		},
 		{
 			"name": "Login button specified by XPath",
 			"input": "control | name = Login Button 3 | xpath=//@id=btnLogin | FriendlyName = Login Btn",
-			"expect": ""
+			"expect": "Define control | name=Login Button 3 | strategy=xpath | selector=//@id=btnLogin | friendlyName=Login Btn"
 		},
 		{
 			"name": "Login button with strategy and selector specified explicitly",
 			"input": "control | name = Login Button 4 | strategy=id | selector=btnLogin | FriendlyName = Login Btn",
-			"expect": ""
+			"expect": "Define control | name=Login Button 4 | strategy=id | selector=btnLogin | friendlyName=Login Btn"
 		},
 		{
 			"name": "Login button with 1 indexer",
 			"input": "control | name = Login Button 5 | id=btnLogin${x} | FriendlyName = Login Btn",
-			"expect": ""
+			"expect": "Define control | name=Login Button 5 | strategy=id | selector=btnLogin${x} | friendlyName=Login Btn | Param0=x"
 		},
 		{
 			"name": "Login button with 2 indexers",
 			"input": "control | name = Login Button 6 | id=btnLogin${x}${y} | FriendlyName = Login Btn",
+			"expect": "Define control | name=Login Button 6 | strategy=id | selector=btnLogin${x}${y} | friendlyName=Login Btn | Param0=x | Param1=y"
+		},
+		{
+			"name": "Pre",
+			"input": "func | x\npre | q | 1",
 			"expect": ""
 		}
 	]

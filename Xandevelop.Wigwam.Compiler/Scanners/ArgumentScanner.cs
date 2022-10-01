@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Xandevelop.Wigwam.Ast;
@@ -29,6 +30,8 @@ namespace Xandevelop.Wigwam.Compiler.Scanners
     // Arg is like ArgName:Value ${somevar} XXX
     public class ArgumentScanner
     {
+        public bool AllowExtraArguments { get; set; }
+
         public ArgumentDataOrError ScanLineArguments(Line line, List<Ast.AstFormalParameter> formalParameters)
         {
             List<AstFormalParameter> expargs = new List<AstFormalParameter>();
@@ -70,7 +73,15 @@ namespace Xandevelop.Wigwam.Compiler.Scanners
 
                 if (exp == null && arg != null)
                 {
-                    errors.Add(new ArgumentError { Name = "Too many arguments" });
+                    if (AllowExtraArguments)
+                    {
+                        if (arg.Name == null) {
+                            errors.Add(new ArgumentError { Name = "Argument must have a name" }); continue;
+                        }
+                        result.Add(arg);
+                        allowUnnamed = false;
+                    }
+                    else errors.Add(new ArgumentError { Name = "Too many arguments" });
                     continue;
                 }
 
@@ -170,8 +181,8 @@ namespace Xandevelop.Wigwam.Compiler.Scanners
         }
     }
 
-    
 
+    [DebuggerDisplay("{Name}")]
     public class ArgumentError
     {
         public string Name { get; internal set; }
